@@ -1,0 +1,21 @@
+Package: progressdatenbankderivate
+Title: Extract and Process Data from the Database of the PROGESS Study
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "First",
+           family = "Last",
+           role = c("aut", "cre"),
+           email = "first.last@example.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: This package is specific for the database of the PROGRESS study. 
+    The functions in this package take tables from this database as input. Then 
+    they extract specific columns. Some of the functions compute various
+    quantities like co-morbidity scores which are not stored in the database but
+    are derived based on the data from the database.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    data.table,
+    utils
+RoxygenNote: 7.0.2
