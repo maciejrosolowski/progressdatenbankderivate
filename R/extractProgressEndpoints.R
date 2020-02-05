@@ -215,6 +215,7 @@ extractProgressEndpoints = function(DID_SOFA, DID_EP_SERDIS = DID_EP_SERDIS,
 
 
   DID_CLIN[, PAT_EVENT2 := paste0(PATSTUID, "_", EVENT)]
+  stopifnot(anyDuplicated(DID_CLIN, by = c("CLIN_PARAM", "PAT_EVENT2")) == 0)
   DID_EP_SERDIS[
     , oxi.ind := DID_CLIN[CLIN_PARAM=="OxygenIndex-MIN"][
       # match_hk(DID_EP_SERDIS$PAT_EVENT, PAT_EVENT2), as.numeric(WERT)]
@@ -241,6 +242,8 @@ extractProgressEndpoints = function(DID_SOFA, DID_EP_SERDIS = DID_EP_SERDIS,
   thrombodat2[,tp := stringr::str_split(variable, "_") %>% sapply(., "[",3)]
   thrombodat2[,EVENT:= zeitpunkt2event(zp_fabian = tp)]
   thrombodat2[, PAT_EVENT2 := paste0(patstuid, "_", EVENT)]
+
+  stopifnot(anyDuplicated(DID_EP_SERDIS$PAT_EVENT2) == 0)
 
   DID_EP_SERDIS[, thrombo_min   :=   thrombodat2[typ=="min"][
     # match_hk(DID_EP_SERDIS$PAT_EVENT, PAT_EVENT2), as.numeric(value)]
@@ -284,6 +287,7 @@ extractProgressEndpoints = function(DID_SOFA, DID_EP_SERDIS = DID_EP_SERDIS,
     DID_EP_SERDIS[,id_future := paste(PATSTUID, zeitpunktref_future)]
     variab_future = paste0(variab,"__plus", future_days, "day")
     # DID_EP_SERDIS[,(variab_future) := DID_EP_SERDIS[match_hk(id_future,id_gx), get(variab)]]
+    stopifnot(anyDuplicated(DID_EP_SERDIS$variab) == 0)
     DID_EP_SERDIS[,(variab_future) := DID_EP_SERDIS[match(id_future,id_gx), get(variab)]]
     DID_EP_SERDIS$zeitpunktref = NULL
     DID_EP_SERDIS$zeitpunktref_future = NULL
