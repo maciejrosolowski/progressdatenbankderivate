@@ -16,6 +16,10 @@
 #' getData4age.sex(DID_PROBAND)
 #' }
 getData4age.sex = function(DID_PROBAND) {
+  # due to non-standard evaluation notes in R CMD check
+  SEX <- sex.0_is_male <- patstuid <- PATSTUID <- AGE <- NULL
+  # nse_vars <- c("SEX", "sex.0_is_male", "patstuid", "PATSTUID", "AGE")
+  # eval(parse(text = paste(paste(nse_vars, collapse = " <- "), "<- NULL")), envir = parent.frame())
   # stop if any duplicated PATSTUIDs
   # stopifnot(nrow(DID_PROBAND[toolboxH::allDuplicatedEntries(PATSTUID)])==0)
   stopifnot(anyDuplicated(DID_PROBAND[, PATSTUID]) == 0)
@@ -25,4 +29,4 @@ getData4age.sex = function(DID_PROBAND) {
   toadd_agesex[]
 }
 
-utils::globalVariables(c("SEX", "sex.0_is_male"))
+# utils::globalVariables(c("SEX", "sex.0_is_male"))

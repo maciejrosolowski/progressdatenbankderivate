@@ -17,6 +17,8 @@
 #' }
 getData4curb = function(DID_CURB65) {
   curb = copy(DID_CURB65)
+  # due to non-standard evaluation notes in R CMD check
+  PATSTUID <- EVENT <- AGE <- CRB <- CRB65 <- NULL
   # stopifnot(nrow(curb[allDuplicatedEntries(paste(PATSTUID, EVENT))])==0)
   stopifnot(anyDuplicated(curb, by = c("PATSTUID", "EVENT")) == 0)
 
@@ -35,4 +37,4 @@ getData4curb = function(DID_CURB65) {
   curb
 }
 
-utils::globalVariables(c("PATSTUID", "EVENT", "AGE", "CRB", "CRB65", "."))
+# utils::globalVariables(c("PATSTUID", "EVENT", "AGE", "CRB", "CRB65", "."))

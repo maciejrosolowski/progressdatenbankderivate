@@ -20,6 +20,10 @@
 #' }
 #'
 getData4thrombo <- function(FRM_DIL_LABORWERTE, DID_CLIN) {
+  # due to non-standard evaluation notes in R CMD check
+  event <- UNIT <- COL <- DIFFBB <- VALUE <- PARAM_CODE <- minvalue <-
+    PATSTUID <- EVENT <- CLIN_PARAM <- WERT <- value <- patstuid <- NULL
+
   # 53. Thrombozyten
   thrombo <- FRM_DIL_LABORWERTE[COL=="THROMBO", .(
     patstuid=PATSTUID, event=EVENT,UNIT ,
@@ -73,5 +77,5 @@ getData4thrombo <- function(FRM_DIL_LABORWERTE, DID_CLIN) {
   dat
 }
 
-utils::globalVariables(c("event", "UNIT", "COL", "DIFFBB", "VALUE",
-                         "PARAM_CODE", "minvalue"))
+# utils::globalVariables(c("event", "UNIT", "COL", "DIFFBB", "VALUE",
+#                          "PARAM_CODE", "minvalue"))

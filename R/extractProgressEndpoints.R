@@ -33,6 +33,18 @@ extractProgressEndpoints = function(DID_SOFA, DID_EP_SERDIS = DID_EP_SERDIS,
                                     FRM_DIL_LABORWERTE = FRM_DIL_LABORWERTE,
                                     critMindVerschlechterung = 4, sofaEPonly = F)
 {
+  # due to non-standard evaluation notes in R CMD check
+  futureEP_pre <- EP <- futureEP_1st <- futureEP <- BEATMUNG <-
+    future_ventilation_pre <- future_ventilation_1st <- future_ventilation <-
+    future_dead <- TOD <- future_dead_1st <- PAT_EVENT <- worstfutureSOFA <-
+    SUPPL_SOFA <- sofa_maxVerschlechtung <- SOFA_Tp0 <- worstfutureSOFATp1st <-
+    SUPPL_npSOFA <- SUPPL_PULMONAL <- PAT_EVENT2 <- oxi.ind <- CLIN_PARAM <-
+    WERT <- billiLOG <- kreaLOG <- map <- typ <- variable <- tp <- patstuid <-
+    thrombo_min <- value <- thrombo_dbb <- gcs <- newvar <- variab <- future_days <-
+    num <- zeitpunktref_future <- id_gx <- id_future <- zeitpunktref <-
+    EVENT <- PATSTUID <- NULL
+
+
   DID_EP_SERDIS = copy(DID_EP_SERDIS)
   DID_SOFA = copy(DID_SOFA)
   # DID_EP_SERDIS$futureEP = NULL
@@ -315,13 +327,13 @@ extractProgressEndpoints = function(DID_SOFA, DID_EP_SERDIS = DID_EP_SERDIS,
   resi
 }
 
-utils::globalVariables(
-  c("futureEP_pre", "EP", "futureEP_1st", "futureEP", "BEATMUNG",
-    "future_ventilation_pre", "future_ventilation_1st", "future_ventilation",
-    "future_dead", "TOD", "future_dead_1st", "PAT_EVENT", "worstfutureSOFA",
-    "SUPPL_SOFA", "sofa_maxVerschlechtung", "SOFA_Tp0", "worstfutureSOFATp1st",
-    "SUPPL_npSOFA", "SUPPL_PULMONAL", "PAT_EVENT2", "oxi.ind", "CLIN_PARAM",
-    "WERT", "billiLOG", "kreaLOG", "map", "typ", "variable", "tp", "patstuid",
-    "thrombo_min", "value", "thrombo_dbb", "gcs", "newvar", "variab",
-    "future_days", "num", "zeitpunktref_future", "id_gx", "id_future",
-    "zeitpunktref"))
+# utils::globalVariables(
+#   c("futureEP_pre", "EP", "futureEP_1st", "futureEP", "BEATMUNG",
+#     "future_ventilation_pre", "future_ventilation_1st", "future_ventilation",
+#     "future_dead", "TOD", "future_dead_1st", "PAT_EVENT", "worstfutureSOFA",
+#     "SUPPL_SOFA", "sofa_maxVerschlechtung", "SOFA_Tp0", "worstfutureSOFATp1st",
+#     "SUPPL_npSOFA", "SUPPL_PULMONAL", "PAT_EVENT2", "oxi.ind", "CLIN_PARAM",
+#     "WERT", "billiLOG", "kreaLOG", "map", "typ", "variable", "tp", "patstuid",
+#     "thrombo_min", "value", "thrombo_dbb", "gcs", "newvar", "variab",
+#     "future_days", "num", "zeitpunktref_future", "id_gx", "id_future",
+#     "zeitpunktref"))

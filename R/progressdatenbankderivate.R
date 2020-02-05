@@ -11,3 +11,4 @@
 #' @name progressdatenbankderivate
 #' @import data.table
 NULL
+utils::globalVariables(".")

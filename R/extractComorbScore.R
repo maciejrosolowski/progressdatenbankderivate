@@ -17,6 +17,11 @@
 #' extractComorbScore(FRM_BAS)
 #' }
 extractComorbScore = function(FRM_BAS) {
+  # due to non-standard evaluation notes in R CMD check
+  SCHRHERZorHI <- SCHRHERZ <- HI <- CEREBROERK <- CHRNIERE <- CHRLEBER <-
+    DIABETES <- CHRATEMLUNG <- SCHRHERZorHIweighted <- CEREBROERKweighted <-
+    CHRNIEREweighted <- CHRLEBERweighted <- DIABETESweigted <-
+    CHRATEMLUNGweighted <- comorbscore <- PATSTUID <- EVENT <- NULL
 
   #### Matching details
   # - in the statistical analysis of PROGRESS GE (mixed model) I adjusted for 'age', 'bmi','sex.0_is_male', 'sum_sofa', 'rauchen_anz_jahre'
@@ -82,9 +87,9 @@ extractComorbScore = function(FRM_BAS) {
   resi
 }
 
-utils::globalVariables(c("SCHRHERZorHI", "SCHRHERZ", "HI", "CEREBROERK",
-                         "CHRNIERE", "CHRLEBER", "DIABETES", "CHRATEMLUNG",
-                         "SCHRHERZorHIweighted", "CEREBROERKweighted",
-                         "CHRNIEREweighted", "CHRLEBERweighted",
-                         "DIABETESweigted", "CHRATEMLUNGweighted",
-                         "comorbscore"))
+# utils::globalVariables(c("SCHRHERZorHI", "SCHRHERZ", "HI", "CEREBROERK",
+#                          "CHRNIERE", "CHRLEBER", "DIABETES", "CHRATEMLUNG",
+#                          "SCHRHERZorHIweighted", "CEREBROERKweighted",
+#                          "CHRNIEREweighted", "CHRLEBERweighted",
+#                          "DIABETESweigted", "CHRATEMLUNGweighted",
+#                          "comorbscore"))
