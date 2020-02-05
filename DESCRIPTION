@@ -15,7 +15,11 @@ Description: This package is specific for the database of the PROGRESS study.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends:
+    R (>= 2.10)
 Imports: 
     data.table,
-    utils
+    utils,
+    stringr,
+    magrittr
 RoxygenNote: 7.0.2
