@@ -17,7 +17,7 @@
 event2zeitpunkt = function(EVENT, returnformat = c("zeitpunktref", "zp_fabianref"),
                            event2zeitpunkt_df =
                              progressdatenbankderivate::event2zeitpunkt_table) {
-  zeitpunktref <- zp_fabianref <- EVENT <- NULL
+  zeitpunktref <- zp_fabianref <- NULL
 
   if(all(na.omit(EVENT) %in% event2zeitpunkt_df$EVENTref)==F)
     stop("Following event number(s) undefined in this function: ",

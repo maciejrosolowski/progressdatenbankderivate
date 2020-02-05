@@ -44,6 +44,14 @@ extractProgressEndpoints = function(DID_SOFA, DID_EP_SERDIS = DID_EP_SERDIS,
     num <- zeitpunktref_future <- id_gx <- id_future <- zeitpunktref <-
     EVENT <- PATSTUID <- NULL
 
+  # if no non-missing elements than return Inf and do not warn
+  min_nowarn <- function(..., na.rm = FALSE) {
+    if (x <- is.infinite(suppressWarnings(min(..., na.rm = na.rm)))) {
+      x
+    } else {
+      min(..., na.rm = na.rm)
+    }
+  }
 
   DID_EP_SERDIS = copy(DID_EP_SERDIS)
   DID_SOFA = copy(DID_SOFA)
@@ -55,7 +63,7 @@ extractProgressEndpoints = function(DID_SOFA, DID_EP_SERDIS = DID_EP_SERDIS,
   # DID_EP_SERDIS[ futureEP_pre ==1 & EP==0& EVENT==1,.(PATSTUID, EP, EVENT,futureEP_pre)]
   stopifnot(nrow(DID_EP_SERDIS[ futureEP_pre ==1 & EP==1& EVENT==1,.(PATSTUID, EP, EVENT,futureEP_pre)])==0)
   # DID_EP_SERDIS[,.N,futureEP_pre]
-  DID_EP_SERDIS[, futureEP_1st := min(EVENT[EP==1], na.rm = T), by = PATSTUID] # war bis v010 futureEP_pre==1 filtered
+  DID_EP_SERDIS[, futureEP_1st := min_nowarn(EVENT[EP==1], na.rm = T), by = PATSTUID] # war bis v010 futureEP_pre==1 filtered
   DID_EP_SERDIS[is.infinite(futureEP_1st)==T , futureEP_1st:= NA]
   # DID_EP_SERDIS[,.N,futureEP_1st]
 
@@ -87,7 +95,7 @@ extractProgressEndpoints = function(DID_SOFA, DID_EP_SERDIS = DID_EP_SERDIS,
 
 
   DID_EP_SERDIS[future_ventilation_pre==1,
-                future_ventilation_1st := min(EVENT[BEATMUNG==1], na.rm = T), by = PATSTUID]
+                future_ventilation_1st := min_nowarn(EVENT[BEATMUNG==1], na.rm = T), by = PATSTUID]
 
   DID_EP_SERDIS[future_ventilation_pre==1,
                 future_ventilation := ifelse((EVENT < future_ventilation_1st) &
@@ -111,7 +119,7 @@ extractProgressEndpoints = function(DID_SOFA, DID_EP_SERDIS = DID_EP_SERDIS,
   # DID_EP_SERDIS[,future_dead:= NULL]
   DID_EP_SERDIS[,future_dead:= as.numeric(
     ifelse(any(na.omit(TOD)==1) , 1, ifelse(all(TOD[EVENT!=1]==0),  0, NA))), by = PATSTUID]
-  DID_EP_SERDIS[future_dead==1, future_dead_1st := min(EVENT[TOD==1], na.rm = T), by = PATSTUID]
+  DID_EP_SERDIS[future_dead==1, future_dead_1st := min_nowarn(EVENT[TOD==1], na.rm = T), by = PATSTUID]
   # DID_EP_SERDIS[PATSTUID==10120,       .(PATSTUID, future_dead, future_dead_1st,EVENT,TOD)]
 
   DID_EP_SERDIS[ future_dead ==1 & TOD==0& EVENT==1,.(PATSTUID, TOD, EVENT,future_dead)]
@@ -169,7 +177,7 @@ extractProgressEndpoints = function(DID_SOFA, DID_EP_SERDIS = DID_EP_SERDIS,
   DID_EP_SERDIS[, worstfutureSOFATp1st :=
                   ifelse(all(is.na(SUPPL_SOFA[EVENT>3])),
                          NA_real_,
-                         min(EVENT[EVENT>3 & SUPPL_SOFA==worstfutureSOFA], na.rm = T)),
+                         min_nowarn(EVENT[EVENT>3 & SUPPL_SOFA==worstfutureSOFA], na.rm = T)),
                 by = PATSTUID]
 
   DID_EP_SERDIS[, .N,worstfutureSOFATp1st]
@@ -183,7 +191,7 @@ extractProgressEndpoints = function(DID_SOFA, DID_EP_SERDIS = DID_EP_SERDIS,
   DID_EP_SERDIS[, (paste0('sofa_verschlechtererMin',critMindVerschlechterung, "Tp1st")) :=
                   ifelse(all(is.na(SUPPL_SOFA[EVENT>3 & SUPPL_SOFA>=SOFA_Tp0+critMindVerschlechterung])),
                          NA_real_,
-                         min(EVENT[EVENT>3 & SUPPL_SOFA>= SOFA_Tp0+critMindVerschlechterung], na.rm = T)),
+                         min_nowarn(EVENT[EVENT>3 & SUPPL_SOFA>= SOFA_Tp0+critMindVerschlechterung], na.rm = T)),
                 by = PATSTUID]
 
   DID_EP_SERDIS[, SUPPL_npSOFA := SUPPL_SOFA-SUPPL_PULMONAL]
