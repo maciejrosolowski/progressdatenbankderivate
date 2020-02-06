@@ -46,7 +46,7 @@ extractProgressEndpoints = function(DID_SOFA, DID_EP_SERDIS = DID_EP_SERDIS,
 
   # if no non-missing elements than return Inf and do not warn
   min_nowarn <- function(..., na.rm = FALSE) {
-    if (x <- is.infinite(suppressWarnings(min(..., na.rm = na.rm)))) {
+    if (is.infinite(x <- suppressWarnings(min(..., na.rm = na.rm)))) {
       x
     } else {
       min(..., na.rm = na.rm)
