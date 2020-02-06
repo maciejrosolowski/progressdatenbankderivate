@@ -18,6 +18,7 @@ zeitpunkt2event = function(zp_fabian, returnformat = c("EVENTref", "zeitpunktref
                            event2zeitpunkt_df =
                              progressdatenbankderivate::event2zeitpunkt_table) {
   # EVENT=3
+  returnformat <- match.arg(returnformat)
 
   if(all(na.omit(zp_fabian) %in% event2zeitpunkt_df$zp_fabianref)==F)
     stop("Following event number(s) undefined in this function: ",
