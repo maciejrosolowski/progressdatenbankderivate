@@ -19,6 +19,7 @@
 #' getData4sysbp.min(FRM_RR)
 #' }
 getData4sysbp.min <- function(FRM_RR) {
+  # due to non-standard evaluation notes in R CMD check
   PATSTUID <- EVENT <- SYSTRR <- event <- patstuid <- value <- NULL
   ##24. Systolischer Blutdruck (in mmHG)
   sysbp.min  <- FRM_RR[,.(patstuid=PATSTUID, event = EVENT, value=as.numeric(SYSTRR))] %>% unique
