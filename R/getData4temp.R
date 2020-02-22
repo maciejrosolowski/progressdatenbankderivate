@@ -18,7 +18,7 @@
 #' FRM_BEF <- readxl::read_excel(excel_fn, 'FRM_BEF')
 #' data.table::setDT(FRM_B24)
 #' data.table::setDT(FRM_BEF)
-#' toadd_temp <- getData4temp(FRM_B24, FRM_BEF)
+#' toadd_temp <- getData4temp(FRM_BEF, FRM_B24)
 #' toadd_temp
 #' }
 getData4temp <- function(FRM_BEF, FRM_B24) {
@@ -66,8 +66,10 @@ getData4temp <- function(FRM_BEF, FRM_B24) {
   temp.all[, minvalue := ifelse(is.na(minvalue_ort.bek)==F,
                                 minvalue_ort.bek, minvalue_ort.unbek)]
 
-  temp.all[, minvalue := unique(na.omit(minvalue)),.(patstuid, event)]
-  temp.all[is.infinite(minvalue), minvalue := NA]
+  # 2020-02-22 MRos: this can probably result in an error or is unnecessary.
+  # I have commented it out. Checked that it does not change the result.
+  # temp.all[, minvalue := unique(na.omit(minvalue)),.(patstuid, event)]
+  # temp.all[is.infinite(minvalue), minvalue := NA]
 
   temp.all[, maxvalue_ort.bek := max(value[ort %in% c(1,2,3,4,5)], na.rm = T),
            .(patstuid,event)]
@@ -85,8 +87,10 @@ getData4temp <- function(FRM_BEF, FRM_B24) {
                     maxvalue_ort.bek,
                     maxvalue_ort.unbek)
            ]
-  temp.all[, maxvalue := unique(na.omit(maxvalue)),.(patstuid, event)]
-  temp.all[is.infinite(maxvalue), maxvalue := NA]
+  # 2020-02-22 MRos: this can probably result in an error or is unnecessary.
+  # I have commented it out. Checked that it does not change the result.
+  # temp.all[, maxvalue := unique(na.omit(maxvalue)),.(patstuid, event)]
+  # temp.all[is.infinite(maxvalue), maxvalue := NA]
 
   temp.all2 = temp.all[,.(patstuid, event, ort.unbek, minvalue, maxvalue)] %>% unique
   temp.all2[,ort.unbek := as.numeric(ort.unbek)]

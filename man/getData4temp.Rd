@@ -29,7 +29,7 @@ FRM_B24 <- readxl::read_excel(excel_fn, 'FRM_B24')
 FRM_BEF <- readxl::read_excel(excel_fn, 'FRM_BEF')
 data.table::setDT(FRM_B24)
 data.table::setDT(FRM_BEF)
-toadd_temp <- getData4temp(FRM_B24, FRM_BEF)
+toadd_temp <- getData4temp(FRM_BEF, FRM_B24)
 toadd_temp
 }
 }
