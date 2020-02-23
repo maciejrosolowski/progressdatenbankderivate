@@ -19,6 +19,7 @@
 #' toadd_bun
 #' }
 getData4bun =  function(FRM_DIL_LABORWERTE) {
+  # due to non-standard evaluation notes in R CMD check
   COL <- EVENT <- PATSTUID <- UNIT <- VALUE <- bun.max <- event <- patstuid <-
     value <- NULL
   sharn  <- FRM_DIL_LABORWERTE[COL=="SHARN",.(patstuid=PATSTUID, event = EVENT,
