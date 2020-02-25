@@ -1,3 +1,5 @@
+#' translate between different labels of the time points
+#'
 #' map between the column zp_fabianref and the columns EVENTref or zeitpunktref
 #' in event2zeitpunkt_table. These columns are different labels of the time points
 #'

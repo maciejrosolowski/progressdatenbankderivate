@@ -2,8 +2,7 @@
 % Please edit documentation in R/event2zeitpunkt.R
 \name{event2zeitpunkt}
 \alias{event2zeitpunkt}
-\title{map between the column EVENTref and the columns zeitpunktref or zp_fabianref
-in event2zeitpunkt_table. These columns are different labels of the time points}
+\title{translate between different labels of the time points}
 \usage{
 event2zeitpunkt(
   EVENT,
