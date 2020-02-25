@@ -77,8 +77,11 @@ data.table::setDT(FRM_RR)
 data.table::setDT(FRM_O2A)
 data.table::setDT(FRM_DIL_LABORWERTE)
 data.table::setDT(FRM_VIS)
-erg <- psi.fct(DID_PROBAND, FRM_BAS, FRM_BEF, FRM_B24, FRM_RR, FRM_O2A,
-FRM_DIL_LABORWERTE,FRM_VIS)
-erg
+erg_d0 <- psi.fct(DID_PROBAND, FRM_BAS, FRM_BEF, FRM_B24, FRM_RR, FRM_O2A,
+FRM_DIL_LABORWERTE,FRM_VIS, zp_fabian = "d0")
+erg_d0
+erg_d1 <- psi.fct(DID_PROBAND, FRM_BAS, FRM_BEF, FRM_B24, FRM_RR, FRM_O2A,
+FRM_DIL_LABORWERTE,FRM_VIS, zp_fabian = "d1")
+erg_d1
 }
 }
