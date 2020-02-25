@@ -57,6 +57,12 @@ psi.fct <- function(DID_PROBAND,FRM_BAS, FRM_BEF, FRM_B24,FRM_RR,FRM_O2A,
                     FRM_DIL_LABORWERTE,FRM_VIS, zp_fabian="d0",
                     event2zeitpunkt_df =
                       progressdatenbankderivate::event2zeitpunkt_table){
+  # due to non-standard evaluation notes in R CMD check
+  EVENTKombination <- afrq.max <- gender <- gluk <- haemkrt <- herz <-
+    hfrq.max <- liver <- nurse.home <- patstuid <- age <- apo2.min <-
+    art.ph.min <- bun <- cerebro <- pleu_erg <- renal <- snat <- sysbp.min <-
+    temp.max <- temp.min <- tumor <- verwirrt <- zp_fabianref <- NULL
+
   if (!(zp_fabian %in% event2zeitpunkt_df$zp_fabianref)){
     stop("ERROR: zp_fabian needs to equal one these values: ",
          paste(event2zeitpunkt_df$zp_fabianref, collapse = ", "))
@@ -118,7 +124,8 @@ psi.fct <- function(DID_PROBAND,FRM_BAS, FRM_BEF, FRM_B24,FRM_RR,FRM_O2A,
   DAT = merge(DAT, toadd_apo2.min, by= "patstuid", all = T,sort = F)
   DAT = merge(DAT, toadd_pleu, by= "patstuid", all = T,sort = F)
 
-  stopifnot(nrow(DAT[allDuplicatedEntries(patstuid)])==0)
+  # stopifnot(nrow(DAT[allDuplicatedEntries(patstuid)])==0)
+  stopifnot(anyDuplicated(DAT[, patstuid]) == 0)
   setDF(DAT)
   # rownames(DAT) = as.character(DAT$patstuid)
   # print(hh(DAT))
@@ -226,7 +233,9 @@ psi.fct <- function(DID_PROBAND,FRM_BAS, FRM_BEF, FRM_B24,FRM_RR,FRM_O2A,
   out = data.table(out)
   out$PATSTUID  = DAT$patstuid
   out$event = zeitpunkt2event(zp_fabian)
-  out = moveColFront(out,c( "PATSTUID", 'event'))
+  # 2020-02-25 MRos: replace call to moveColFront for no dependency on toolboxH
+  # out = moveColFront(out,c( "PATSTUID", 'event'))
+  out <- data.table::setcolorder(out, neworder = c( "PATSTUID", 'event'))
   erg = c()
   erg$input  = DAT
   erg$input2 = list(DAT$patstuid, age,verwirrt,hfrq.max,afrq.max,sysbp.min,
@@ -246,20 +255,20 @@ psi.fct <- function(DID_PROBAND,FRM_BAS, FRM_BEF, FRM_B24,FRM_RR,FRM_O2A,
 
 #' Determine, if the patient has PSI class I
 #'
-#' @param age
-#' @param verwirrt
-#' @param hfrq.max
-#' @param afrq.max
-#' @param sysbp.min
-#' @param temp.min
-#' @param temp.max
-#' @param tumor
-#' @param herz
-#' @param cerebro
-#' @param renal
-#' @param liver
+#' @param age a variable created inside psi.fct
+#' @param verwirrt a variable created inside psi.fct
+#' @param hfrq.max a variable created inside psi.fct
+#' @param afrq.max a variable created inside psi.fct
+#' @param sysbp.min a variable created inside psi.fct
+#' @param temp.min a variable created inside psi.fct
+#' @param temp.max a variable created inside psi.fct
+#' @param tumor a variable created inside psi.fct
+#' @param herz a variable created inside psi.fct
+#' @param cerebro a variable created inside psi.fct
+#' @param renal a variable created inside psi.fct
+#' @param liver a variable created inside psi.fct
 #' @return logical vector
-#' @NoRd
+#' @noRd
 psi.I<- function(age,verwirrt,hfrq.max,afrq.max,sysbp.min,temp.min,temp.max,
                  tumor,herz,cerebro,renal,liver){
   age[is.na(age)]                 <- 60
@@ -291,20 +300,29 @@ psi.I<- function(age,verwirrt,hfrq.max,afrq.max,sysbp.min,temp.min,temp.max,
 
 #' Determine the PSI class
 #'
-#' @param age
-#' @param verwirrt
-#' @param hfrq.max
-#' @param afrq.max
-#' @param sysbp.min
-#' @param temp.min
-#' @param temp.max
-#' @param tumor
-#' @param herz
-#' @param cerebro
-#' @param renal
-#' @param liver
+#' @param age a variable created inside psi.fct
+#' @param verwirrt a variable created inside psi.fct
+#' @param hfrq.max a variable created inside psi.fct
+#' @param afrq.max a variable created inside psi.fct
+#' @param sysbp.min a variable created inside psi.fct
+#' @param temp.min a variable created inside psi.fct
+#' @param temp.max a variable created inside psi.fct
+#' @param tumor a variable created inside psi.fct
+#' @param herz a variable created inside psi.fct
+#' @param cerebro a variable created inside psi.fct
+#' @param renal a variable created inside psi.fct
+#' @param liver a variable created inside psi.fct
+#' @param gender a variable created inside psi.fct
+#' @param nurse.home a variable created inside psi.fct
+#' @param art.ph.min a variable created inside psi.fct
+#' @param bun a variable created inside psi.fct
+#' @param snat a variable created inside psi.fct
+#' @param gluk a variable created inside psi.fct
+#' @param haemkrt a variable created inside psi.fct
+#' @param apo2.min a variable created inside psi.fct
+#' @param pleu_erg a variable created inside psi.fct
 #' @return logical vector
-#' @NoRd
+#' @noRd
 psi.I.to.V <-function(age,verwirrt,hfrq.max,afrq.max,sysbp.min,temp.min,temp.max,tumor,herz,cerebro,renal,liver,
                       gender,nurse.home,art.ph.min,bun,snat,gluk,haemkrt,
                       apo2.min,pleu_erg){
