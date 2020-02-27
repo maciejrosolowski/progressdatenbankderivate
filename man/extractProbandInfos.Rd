@@ -32,5 +32,6 @@ excel_fn <- paste0("/net/ifs1/san_projekte/projekte/",
 DID_PROBAND <- readxl::read_excel(excel_fn, "DID_PROBAND")
 data.table::setDT(DID_PROBAND)
 extractProbandInfos(DID_PROBAND, parameter = "BMI")
+extractProbandInfos(DID_PROBAND, parameter = c("BMI", "AGE"))
 }
 }

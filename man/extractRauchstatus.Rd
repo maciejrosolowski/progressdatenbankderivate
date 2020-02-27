@@ -31,5 +31,6 @@ excel_fn <- paste0("/net/ifs1/san_projekte/projekte/",
 FRM_BAS <- readxl::read_excel(excel_fn, "FRM_BAS")
 data.table::setDT(FRM_BAS)
 extractRauchstatus(FRM_BAS, rauchvars = "RAUCHL12M")
+extractRauchstatus(FRM_BAS, rauchvars = c("RAUCHL12M", "RAUCHJAHRE"))
 }
 }

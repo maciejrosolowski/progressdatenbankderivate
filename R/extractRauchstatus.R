@@ -17,12 +17,13 @@
 #' FRM_BAS <- readxl::read_excel(excel_fn, "FRM_BAS")
 #' data.table::setDT(FRM_BAS)
 #' extractRauchstatus(FRM_BAS, rauchvars = "RAUCHL12M")
+#' extractRauchstatus(FRM_BAS, rauchvars = c("RAUCHL12M", "RAUCHJAHRE"))
 #' }
 extractRauchstatus = function(FRM_BAS,
                               rauchvars = c('RAUCHJAHRE', 'RAUCHPACK',
                                             'RAUCHAKT', 'RAUCHL12M')) {
   # rauchvars = c('RAUCHJAHRE', 'RAUCHPACK','RAUCHAKT', 'RAUCHL12M')
-
+  rauchvars <- match.arg(rauchvars, several.ok = TRUE)
   for(i in rauchvars) {
     FRM_BAS[,(i):= removeMissingCodes(get(i))]
   }
