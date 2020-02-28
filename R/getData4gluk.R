@@ -1,4 +1,4 @@
-#' get age and sex from the table DID_PROBAND
+#' get blood glucose data from the table FRM_DIL_LABORWERTE
 #'
 #' @param FRM_DIL_LABORWERTE data.table containing the table FRM_DIL_LABORWERTE from the database
 #' of the PROGRESS study

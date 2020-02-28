@@ -2,7 +2,7 @@
 % Please edit documentation in R/getData4gluk.R
 \name{getData4gluk}
 \alias{getData4gluk}
-\title{get age and sex from the table DID_PROBAND}
+\title{get blood glucose data from the table FRM_DIL_LABORWERTE}
 \usage{
 getData4gluk(FRM_DIL_LABORWERTE)
 }
@@ -15,7 +15,7 @@ data.table in the wide format. Each row corresponds to one patient
 and the columns contain blood glucose measurements at a given time.
 }
 \description{
-get age and sex from the table DID_PROBAND
+get blood glucose data from the table FRM_DIL_LABORWERTE
 }
 \examples{
 \dontrun{
