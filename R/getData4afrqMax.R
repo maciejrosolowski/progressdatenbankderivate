@@ -26,9 +26,12 @@ getData4afrqMax <- function(FRM_B24, FRM_BEF) {
   # due to non-standard evaluation notes in R CMD check
   PATSTUID <- EVENT <- AFREQMIN <- AFREQMAX <- AFREQ <- value <- patstuid <-
     event <- NULL
-  afrq.min<- FRM_B24[,.(patstuid=PATSTUID, event = EVENT, value=as.numeric(AFREQMIN))] %>% unique
-  afrq.max<- FRM_B24[,.(patstuid=PATSTUID, event = EVENT, value=as.numeric(AFREQMAX))] %>% unique
-  afrq.bef<- FRM_BEF[,.(patstuid=PATSTUID, event = EVENT, value=as.numeric(AFREQ))] %>% unique
+  afrq.min<- FRM_B24[,.(patstuid=PATSTUID,
+                        event = EVENT, value=as.numeric(AFREQMIN))] %>% unique
+  afrq.max<- FRM_B24[,.(patstuid=PATSTUID,
+                        event = EVENT, value=as.numeric(AFREQMAX))] %>% unique
+  afrq.bef<- FRM_BEF[,.(patstuid=PATSTUID,
+                        event = EVENT, value=as.numeric(AFREQ))] %>% unique
 
   afrq.all= rbind(afrq.min, afrq.max, afrq.bef)
 
@@ -39,7 +42,9 @@ getData4afrqMax <- function(FRM_B24, FRM_BEF) {
   # Hmisc::describe(afrq.max2)
 
   toadd_afrq.max = dcast.data.table(afrq.max2, patstuid ~ event)
-  setnames(toadd_afrq.max,  as.character(found_events_afrqMax), paste0("afrq.max_",event2zeitpunkt(found_events_afrqMax, returnformat = "zp_fabianref")))
+  setnames(toadd_afrq.max,  as.character(found_events_afrqMax),
+           paste0("afrq.max_",event2zeitpunkt(found_events_afrqMax,
+                                              returnformat = "zp_fabianref")))
   # Hmisc::describe(toadd_afrq.max)
   # stopifnot(nrow(toadd_afrq.max[allDuplicatedEntries(patstuid)])==0)
   stopifnot(anyDuplicated(toadd_afrq.max[, patstuid]) == 0)
