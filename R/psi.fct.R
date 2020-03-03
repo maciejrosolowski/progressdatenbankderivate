@@ -16,16 +16,20 @@
 #'  the database of the PROGRESS study
 #' @param FRM_VIS data.table containing the table with the same name from
 #'  the database of the PROGRESS study
-#' @param FRM_BAS data.table containing the table with the same name from
-#'  the database of the PROGRESS study
 #' @param zp_fabian vector of characters. They must be present in
 #' event2zeitpunkt_table$zp_fabianref.
 #' @param event2zeitpunkt_df data.table event2zeitpunkt_table (available with
 #' the package).
 #'
-#' @return data.table with the ID of the patient (patstuid), and the
-#' data on pleural effusion (PLEUERGUSS from FRM_BEF, FRM_VIS),
-#' in the wide format.
+#' @return a named list with components: input, input2 and out. out is
+#' a data.table with one row corresponding to a combination of PATSTUID
+#' (patient) and "event" (time point). Column psi.class contains the PSI
+#' values computed by imputing non-critical values, if some components
+#' of the score were missing. The column psi.class.fillt contains NAs, if
+#' any of the components needed for computing the PSI score were missing.
+#' The column vollstaendig.von.20 contains information about the number of
+#' components having values available out of the overall 20 components
+#' of the PSI score.
 #' @export
 #'
 #' @examples

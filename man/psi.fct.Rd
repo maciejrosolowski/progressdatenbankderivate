@@ -49,9 +49,15 @@ event2zeitpunkt_table$zp_fabianref.}
 the package).}
 }
 \value{
-data.table with the ID of the patient (patstuid), and the
-data on pleural effusion (PLEUERGUSS from FRM_BEF, FRM_VIS),
-in the wide format.
+a named list with components: input, input2 and out. out is
+a data.table with one row corresponding to a combination of PATSTUID
+(patient) and "event" (time point). Column psi.class contains the PSI
+values computed by imputing non-critical values, if some components
+of the score were missing. The column psi.class.fillt contains NAs, if
+any of the components needed for computing the PSI score were missing.
+The column vollstaendig.von.20 contains information about the number of
+components having values available out of the overall 20 components
+of the PSI score.
 }
 \description{
 Compute the PSI (pneumonia severity index).
