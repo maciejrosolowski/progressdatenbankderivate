@@ -17,6 +17,8 @@
 #' getData4gcs(DID_CLIN)
 #' }
 getData4gcs <- function(DID_CLIN) {
+  # due to non-standard evaluation notes in R CMD check
+  CLIN_PARAM <- EVENT <- EVENT <- PATSTUID <- WERT <- patstuid <- NULL
   # 56. GCS
   gcs = DID_CLIN[
     CLIN_PARAM=="GCS-SUM",.(patstuid = PATSTUID,
