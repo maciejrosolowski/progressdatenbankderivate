@@ -1,5 +1,10 @@
 #' Get the data on the (mechanical) ventilation.
 #'
+#' The columns in the returned data.table contain detailed information on
+#' the method by which the ventilation was applied. The last set of columns,
+#' bea.auf, bea.d0 and so on, say if ventilation was used at all,
+#' i.e., by any method.
+#'
 #' @param FRM_BEAT data.table containing the table so named from the database
 #' of the PROGRESS study
 #'

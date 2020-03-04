@@ -15,7 +15,10 @@ data.table with the ID of the patient (patstuid), and the
 data on the ventilation, in the wide format.
 }
 \description{
-Get the data on the (mechanical) ventilation.
+The columns in the returned data.table contain detailed information on
+the method by which the ventilation was applied. The last set of columns,
+bea.auf, bea.d0 and so on, say if ventilation was used at all,
+i.e., by any method.
 }
 \examples{
 \dontrun{
