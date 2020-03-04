@@ -1,6 +1,6 @@
 #' Get data on the minimum of the part pressure of arterial O2.
 #'
-#' @param FRM_O2A data.table containing the table FRM_BEF from the database
+#' @param FRM_O2A data.table containing the table FRM_O2A from the database
 #' of the PROGRESS study
 #'
 #' @return data.table with the ID of the patient (patstuid), and the

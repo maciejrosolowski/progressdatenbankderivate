@@ -7,7 +7,7 @@
 getData4apo2.min(FRM_O2A)
 }
 \arguments{
-\item{FRM_O2A}{data.table containing the table FRM_BEF from the database
+\item{FRM_O2A}{data.table containing the table FRM_O2A from the database
 of the PROGRESS study}
 }
 \value{
