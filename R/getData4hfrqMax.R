@@ -25,9 +25,12 @@ getData4hfrqMax <- function(FRM_B24, FRM_BEF) {
   # due to non-standard evaluation notes in R CMD check
   PATSTUID <- EVENT <- HFREQMIN <- HFREQMAX <- HFREQ <- value <- patstuid <-
     event <- NULL
-  hfrq.min<- FRM_B24[,.(patstuid=PATSTUID, event = EVENT, value=as.numeric(HFREQMIN))] %>% unique
-  hfrq.max<- FRM_B24[,.(patstuid=PATSTUID, event = EVENT, value=as.numeric(HFREQMAX))] %>% unique
-  hfrq.bef<- FRM_BEF[,.(patstuid=PATSTUID, event = EVENT, value=as.numeric(HFREQ))] %>% unique
+  hfrq.min<- FRM_B24[,.(patstuid=PATSTUID, event = EVENT,
+                        value=as.numeric(HFREQMIN))] %>% unique
+  hfrq.max<- FRM_B24[,.(patstuid=PATSTUID, event = EVENT,
+                        value=as.numeric(HFREQMAX))] %>% unique
+  hfrq.bef<- FRM_BEF[,.(patstuid=PATSTUID, event = EVENT,
+                        value=as.numeric(HFREQ))] %>% unique
 
   hfrq.all = rbind(hfrq.min, hfrq.max, hfrq.bef)
   # hfrq.all[allDuplicatedEntries(paste(patstuid, event))]
@@ -39,7 +42,9 @@ getData4hfrqMax <- function(FRM_B24, FRM_BEF) {
   # qlist66 = venn4(DAT$patstuid, FRM_BAS$PATSTUID, FRM_BEF$PATSTUID, FRM_B24$PATSTUID)
 
   toadd_hfrq.max = dcast.data.table(hfrq.max2, patstuid ~ event)
-  setnames(toadd_hfrq.max,  as.character(found_events_hfrq), paste0("hfrq.max_",event2zeitpunkt(found_events_hfrq, returnformat = "zp_fabianref")))
+  setnames(toadd_hfrq.max,  as.character(found_events_hfrq),
+           paste0("hfrq.max_",event2zeitpunkt(found_events_hfrq,
+                                              returnformat = "zp_fabianref")))
   # Hmisc::describe(toadd_hfrq.max)
   # stopifnot(nrow(toadd_hfrq.max[allDuplicatedEntries(patstuid)])==0)
   stopifnot(anyDuplicated(toadd_hfrq.max[, patstuid]) == 0)
