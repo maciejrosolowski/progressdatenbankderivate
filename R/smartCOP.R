@@ -57,7 +57,7 @@
 #' zp_fabian = "auf_in_d-1_in_d0")
 #' erg
 #' }
-smartCOP <- function (FRM_RR,FRM_BEF, FRM_VIS,FRM_DIL_LABORWERTE,FRM_B24,
+smartCOP <- function(FRM_RR,FRM_BEF, FRM_VIS,FRM_DIL_LABORWERTE,FRM_B24,
                       DID_PROBAND,DID_CLIN,DID_OXYGENIND_SINGLE,FRM_O2A,
                       zp_fabian="auf_in_d-1_in_d0") {
   # due to non-standard evaluation notes in R CMD check
