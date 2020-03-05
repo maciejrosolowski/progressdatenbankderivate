@@ -2,7 +2,7 @@
 % Please edit documentation in R/getData4oxi.ind.R
 \name{getData4oxi.ind}
 \alias{getData4oxi.ind}
-\title{get the oxygenation index (Horowitz index)}
+\title{get the minimum oxygenation index (Horowitz index) in kPa}
 \usage{
 getData4oxi.ind(DID_CLIN)
 }

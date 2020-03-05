@@ -1,4 +1,4 @@
-#' get the oxygenation index (Horowitz index)
+#' get the minimum oxygenation index (Horowitz index) in kPa
 #'
 #' Values from the rows with CLIN_PARAM == "OxygenIndex-MIN" in the table
 #' DID_CLIN are returned.
