@@ -2,6 +2,7 @@
 
 export("%>%")
 export(HalmScore)
+export(SCAP)
 export(event2zeitpunkt)
 export(extractComorbScore)
 export(extractProbandInfos)
