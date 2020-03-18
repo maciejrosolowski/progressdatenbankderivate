@@ -37,10 +37,7 @@ DID_PROBAND <- readxl::read_excel(excel_fn, 'DID_PROBAND')
 FRM_BAS <- readxl::read_excel(excel_fn, 'FRM_BAS')
 FRM_BEF <- readxl::read_excel(excel_fn, 'FRM_BEF')
 FRM_B24 <- readxl::read_excel(excel_fn, 'FRM_B24')
-# suppress warnings about type conversions
-suppressWarnings(
-  FRM_RR <- readxl::read_excel(excel_fn, 'FRM_RR')
-)
+FRM_RR <- readxl::read_excel(excel_fn, 'FRM_RR', guess_max = 10e5)
 FRM_O2A <- readxl::read_excel(excel_fn, 'FRM_O2A')
 FRM_DIL_LABORWERTE <- readxl::read_excel(excel_fn, "FRM_DIL_LABORWERTE")
 FRM_VIS <- readxl::read_excel(excel_fn, 'FRM_VIS')
