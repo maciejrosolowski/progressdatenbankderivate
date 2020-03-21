@@ -1,12 +1,29 @@
 Package: progressdatenbankderivate
 Title: Extract and Process Data from the Database of the PROGESS Study
 Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
+Authors@R: c(
+    person(given = "Holger",
+           family = "Kirsten",
            role = c("aut", "cre"),
            email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = c(ORCID = "YOUR-ORCID-ID")),
+    person(given = "Fabian",
+           family = "Schwarzenberger",
+           role = c("aut"),
+           email = "first.last@example.com",
+           comment = c(ORCID = "YOUR-ORCID-ID")),
+    person(given = "Katrin",
+           family = "Horn",
+           role = c("aut"),
+           email = "first.last@example.com",
+           comment = c(ORCID = "YOUR-ORCID-ID")),
+    person(given = "Maciej",
+           family = "Rosolowski",
+           role = c("cre"),
+           email = "first.last@example.com",
+           comment = c(ORCID = "YOUR-ORCID-ID")),
+)
+
 Description: This package is specific for the database of the PROGRESS study. 
     The functions in this package take tables from this database as input. Then 
     they extract specific columns. Some of the functions compute various
