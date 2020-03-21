@@ -26,15 +26,25 @@ getData4tum.herz.cer.ren.liv.nurs = function(FRM_BAS) {
     nurse.home <- NULL
   toadd_tum.herz.cer.ren.liv.nurs =
     FRM_BAS[,.(patstuid = PATSTUID, tumor = TUMOR, herz = HI, cerebro =CEREBROERK,
-               renal = CHRNIERE, liver = CHRLEBER, nurse.home  = WOHNUNG==4)]
+               renal = CHRNIERE, liver = CHRLEBER, nurse.home  = WOHNUNG)]
 
+  # 2020-03-21 MRosolowski
+  # replace -1, 98, 99 by NA
+  for (j in setdiff(colnames(toadd_tum.herz.cer.ren.liv.nurs), "patsutid")) {
+    set(toadd_tum.herz.cer.ren.liv.nurs,
+        which(toadd_tum.herz.cer.ren.liv.nurs[[j]] %in% c(-1, 98, 99)), NA)
+  }
+  # nursery home resident: WOHNUNG == 4
+  toadd_tum.herz.cer.ren.liv.nurs[, nurse.home := nurse.home == 4]
 
-  toadd_tum.herz.cer.ren.liv.nurs[nurse.home %in% c(-1, 98, 99), nurse.home:= NA]
-  setDF(toadd_tum.herz.cer.ren.liv.nurs)
-  toadd_tum.herz.cer.ren.liv.nurs[toadd_tum.herz.cer.ren.liv.nurs==-1] <- NA
-  toadd_tum.herz.cer.ren.liv.nurs[toadd_tum.herz.cer.ren.liv.nurs==98] <- NA
-  toadd_tum.herz.cer.ren.liv.nurs[toadd_tum.herz.cer.ren.liv.nurs==99] <- NA
-  setDT(toadd_tum.herz.cer.ren.liv.nurs)
+  # # MRos: I commented out the originial code because it did not replace
+  # -1, 98, 99 with NA
+  # toadd_tum.herz.cer.ren.liv.nurs[nurse.home %in% c(-1, 98, 99), nurse.home:= NA]
+  # setDF(toadd_tum.herz.cer.ren.liv.nurs)
+  # toadd_tum.herz.cer.ren.liv.nurs[toadd_tum.herz.cer.ren.liv.nurs==-1] <- NA
+  # toadd_tum.herz.cer.ren.liv.nurs[toadd_tum.herz.cer.ren.liv.nurs==98] <- NA
+  # toadd_tum.herz.cer.ren.liv.nurs[toadd_tum.herz.cer.ren.liv.nurs==99] <- NA
+  # setDT(toadd_tum.herz.cer.ren.liv.nurs)
 
   # Hmisc::describe(toadd_tum.herz.cer.ren.liv.nurs)
   toadd_tum.herz.cer.ren.liv.nurs
