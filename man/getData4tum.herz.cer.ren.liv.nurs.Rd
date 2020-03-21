@@ -29,6 +29,6 @@ excel_fn <- paste0("/net/ifs1/san_projekte/projekte/",
 FRM_BAS <- readxl::read_excel(excel_fn, 'FRM_BAS')
 data.table::setDT(FRM_BAS)
 toadd_tum.herz.cer.ren.liv.nurs <- getData4tum.herz.cer.ren.liv.nurs(FRM_BAS)
-toadd_tum.herz.cer.ren.liv.nurs
+toadd_tum.herz.cer.ren.liv.nurs[]
 }
 }

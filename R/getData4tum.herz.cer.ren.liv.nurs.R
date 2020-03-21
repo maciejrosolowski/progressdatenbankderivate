@@ -18,7 +18,7 @@
 #' FRM_BAS <- readxl::read_excel(excel_fn, 'FRM_BAS')
 #' data.table::setDT(FRM_BAS)
 #' toadd_tum.herz.cer.ren.liv.nurs <- getData4tum.herz.cer.ren.liv.nurs(FRM_BAS)
-#' toadd_tum.herz.cer.ren.liv.nurs
+#' toadd_tum.herz.cer.ren.liv.nurs[]
 #' }
 getData4tum.herz.cer.ren.liv.nurs = function(FRM_BAS) {
   # due to non-standard evaluation notes in R CMD check
@@ -32,7 +32,7 @@ getData4tum.herz.cer.ren.liv.nurs = function(FRM_BAS) {
   # replace -1, 98, 99 by NA
   for (j in setdiff(colnames(toadd_tum.herz.cer.ren.liv.nurs), "patsutid")) {
     set(toadd_tum.herz.cer.ren.liv.nurs,
-        which(toadd_tum.herz.cer.ren.liv.nurs[[j]] %in% c(-1, 98, 99)), NA)
+        which(toadd_tum.herz.cer.ren.liv.nurs[[j]] %in% c(-1, 98, 99)), j, NA)
   }
   # nursery home resident: WOHNUNG == 4
   toadd_tum.herz.cer.ren.liv.nurs[, nurse.home := nurse.home == 4]
