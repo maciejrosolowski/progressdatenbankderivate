@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: c(
     person(given = "Holger",
            family = "Kirsten",
-           role = c("aut", "cre"),
+           role = c("aut"),
            email = "first.last@example.com",
            comment = c(ORCID = "YOUR-ORCID-ID")),
     person(given = "Fabian",
@@ -21,9 +21,8 @@ Authors@R: c(
            family = "Rosolowski",
            role = c("cre"),
            email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID")),
-)
-
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+    )
 Description: This package is specific for the database of the PROGRESS study. 
     The functions in this package take tables from this database as input. Then 
     they extract specific columns. Some of the functions compute various
