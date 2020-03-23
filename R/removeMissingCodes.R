@@ -5,7 +5,8 @@
 #' @return the input vector with the sentinel values replaced by NA
 #' @noRd
 removeMissingCodes = function(vektor, missingCode = c(-1,99)){
-  message("Setting values ", paste(missingCode, collapse = ", "), " in ", deparse(substitute(vektor)), " to NA...")
+  # message("Setting values ", paste(missingCode, collapse = ", "), " in ",
+  #         deparse(substitute(vektor)), " to NA...")
   # vektor[stringr::str_trim(vektor) %in% missingCode] = NA
   vektor[as.numeric(vektor) %in% missingCode] = NA
   vektor

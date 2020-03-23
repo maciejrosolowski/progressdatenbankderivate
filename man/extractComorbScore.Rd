@@ -17,6 +17,24 @@ data.tables with the computed comorbscore and its components.
 \description{
 compute the comorbidity score comorbscore
 }
+\details{
+The comorbscore is the modified Charlson score
+(Charlson, Pompei, Ales, and MacKenzie, 1987) and is computed as a sum of the
+following points:
+\itemize{
+\item{} HI (heart failure, Herzinsuffizienz) or SCHRHERZ
+(other chronic heart problem): 1 point,
+\item{} CEREBROERK (chronic cerebr. disease, Chronische Cerebr. Erkrankung):
+ 1 point
+\item{} CHRNIERE (chronic renal failure, chronische Nierenerkrankung):
+2 points
+\item{} CHRLEBER (chronic liver disease, chronische Lebererkrankung):
+3 points
+\item{} DIABETES: 1 point
+\item{} CHRATEMLUNG (chronic lung disease,
+Chronische Atemwegs/Lungenerkrankung): 1 point
+}
+}
 \examples{
 \dontrun{
 excel_fn <- paste0("/net/ifs1/san_projekte/projekte/",
