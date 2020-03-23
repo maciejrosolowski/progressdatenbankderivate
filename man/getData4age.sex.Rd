@@ -4,11 +4,15 @@
 \alias{getData4age.sex}
 \title{get age and sex from the table DID_PROBAND}
 \usage{
-getData4age.sex(DID_PROBAND)
+getData4age.sex(DID_PROBAND, change_names = TRUE)
 }
 \arguments{
 \item{DID_PROBAND}{data.table containing the table DID_PROBAND from the database
 of the PROGRESS study}
+
+\item{change_names}{a logical value. If TRUE, then the names of the patient
+characteristics will be changed. This is expected by the functions which
+computed the severity scores.}
 }
 \value{
 data.table with the ID of the patient (patstuid), age and sex
@@ -23,6 +27,7 @@ excel_fn <- paste0("/net/ifs1/san_projekte/projekte/",
 "20190320/PROGRESS-freeze_201903_01.xlsx")
 DID_PROBAND <- readxl::read_excel(excel_fn, 'DID_PROBAND')
 data.table::setDT(DID_PROBAND)
-getData4age.sex(DID_PROBAND)
+toadd_agesex <- getData4age.sex(DID_PROBAND)
+toadd_agesex <- getData4age.sex(DID_PROBAND, change_names = FALSE)
 }
 }
