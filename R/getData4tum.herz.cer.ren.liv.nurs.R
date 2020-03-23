@@ -3,11 +3,15 @@
 #'
 #' @param FRM_BAS data.table containing the table FRM_BAS
 #' from the database of the PROGRESS study
+#' @param change_names a logical value. If TRUE, then the names of the patient
+#' characteristics will be changed. This is expected by the functions which
+#' computed the severity scores.
 #'
 #' @return data.table with the ID of the patient (patstuid), and the
 #' information on tumor status (TUMOR), heart insufficiency (HI),
-#' CEREBROERK, chronic renal disease (CHRNIERE), chronic liver disease,
-#' and the data on whether the patient is in a nursing home, in the wide format.
+#' CEREBROERK, chronic renal disease (CHRNIERE), chronic liver disease
+#' (CHRLEBER), and the data on whether the patient is in a nursing home,
+#' in the wide format.
 #' @export
 #'
 #' @examples
@@ -19,18 +23,21 @@
 #' data.table::setDT(FRM_BAS)
 #' toadd_tum.herz.cer.ren.liv.nurs <- getData4tum.herz.cer.ren.liv.nurs(FRM_BAS)
 #' toadd_tum.herz.cer.ren.liv.nurs[]
+#' toadd_tum.herz.cer.ren.liv.nurs <-
+#' getData4tum.herz.cer.ren.liv.nurs(FRM_BAS, change_names = FALSE)
+#' toadd_tum.herz.cer.ren.liv.nurs[]
 #' }
-getData4tum.herz.cer.ren.liv.nurs = function(FRM_BAS) {
+getData4tum.herz.cer.ren.liv.nurs = function(FRM_BAS, change_names = TRUE) {
   # due to non-standard evaluation notes in R CMD check
   CEREBROERK <- CHRLEBER <- CHRNIERE <- HI <- PATSTUID <- TUMOR <- WOHNUNG <-
     nurse.home <- NULL
   toadd_tum.herz.cer.ren.liv.nurs =
-    FRM_BAS[,.(patstuid = PATSTUID, tumor = TUMOR, herz = HI, cerebro =CEREBROERK,
-               renal = CHRNIERE, liver = CHRLEBER, nurse.home  = WOHNUNG)]
+    FRM_BAS[,.(PATSTUID, TUMOR, HI, CEREBROERK,
+               CHRNIERE, CHRLEBER, nurse.home = WOHNUNG)]
 
   # 2020-03-21 MRosolowski
   # replace -1, 98, 99 by NA
-  for (j in setdiff(colnames(toadd_tum.herz.cer.ren.liv.nurs), "patsutid")) {
+  for (j in setdiff(colnames(toadd_tum.herz.cer.ren.liv.nurs), "PATSTUID")) {
     set(toadd_tum.herz.cer.ren.liv.nurs,
         which(toadd_tum.herz.cer.ren.liv.nurs[[j]] %in% c(-1, 98, 99)), j, NA)
   }
@@ -45,6 +52,13 @@ getData4tum.herz.cer.ren.liv.nurs = function(FRM_BAS) {
   # toadd_tum.herz.cer.ren.liv.nurs[toadd_tum.herz.cer.ren.liv.nurs==98] <- NA
   # toadd_tum.herz.cer.ren.liv.nurs[toadd_tum.herz.cer.ren.liv.nurs==99] <- NA
   # setDT(toadd_tum.herz.cer.ren.liv.nurs)
+
+  if (change_names == TRUE) {
+    setnames(toadd_tum.herz.cer.ren.liv.nurs,
+             old = c("PATSTUID", "TUMOR", "HI", "CEREBROERK", "CHRNIERE",
+                     "CHRLEBER"),
+             new = c("patstuid", "tumor", "herz", "cerebro", "renal", "liver"))
+  }
 
   # Hmisc::describe(toadd_tum.herz.cer.ren.liv.nurs)
   toadd_tum.herz.cer.ren.liv.nurs
