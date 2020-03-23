@@ -24,6 +24,7 @@ excel_fn <- paste0("/net/ifs1/san_projekte/projekte/",
 "20190320/PROGRESS-freeze_201903_01.xlsx")
 FRM_BEF <- readxl::read_excel(excel_fn, 'FRM_BEF')
 data.table::setDT(FRM_BEF)
-getData4verwirrt(FRM_BEF)
+toadd_verwirrt <- getData4verwirrt(FRM_BEF)
+toadd_verwirrt[]
 }
 }
