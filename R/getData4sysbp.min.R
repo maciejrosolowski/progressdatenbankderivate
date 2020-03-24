@@ -1,7 +1,7 @@
 #' Get information on the minimum of the systolic blood pressure. The
 #' minimization is over EVENT within each PATSTUID.
 #'
-#' @param FRM_RR data.table containing the table FRM_B24 from the database
+#' @param FRM_RR data.table containing the table FRM_RR from the database
 #' of the PROGRESS study
 #'
 #' @return data.table with the ID of the patient (patstuid), and the
