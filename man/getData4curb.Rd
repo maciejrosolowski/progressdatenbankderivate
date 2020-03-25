@@ -23,6 +23,7 @@ excel_fn <- paste0("/net/ifs1/san_projekte/projekte/",
 "20190320/PROGRESS-freeze_201903_01.xlsx")
 DID_CURB65 <- readxl::read_excel(excel_fn, 'DID_CURB65')
 data.table::setDT(DID_CURB65)
-getData4curb(DID_CURB65)
+curb <- getData4curb(DID_CURB65)
+curb[]
 }
 }

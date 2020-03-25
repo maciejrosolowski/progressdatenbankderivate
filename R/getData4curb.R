@@ -13,12 +13,13 @@
 #' "20190320/PROGRESS-freeze_201903_01.xlsx")
 #' DID_CURB65 <- readxl::read_excel(excel_fn, 'DID_CURB65')
 #' data.table::setDT(DID_CURB65)
-#' getData4curb(DID_CURB65)
+#' curb <- getData4curb(DID_CURB65)
+#' curb[]
 #' }
 getData4curb = function(DID_CURB65) {
   curb = copy(DID_CURB65)
   # due to non-standard evaluation notes in R CMD check
-  PATSTUID <- EVENT <- AGE <- CRB <- CRB65 <- NULL
+  PATSTUID <- EVENT <- event <- AGE <- CRB <- CRB65 <- CURB65 <- NULL
   # stopifnot(nrow(curb[allDuplicatedEntries(paste(PATSTUID, EVENT))])==0)
   stopifnot(anyDuplicated(curb, by = c("PATSTUID", "EVENT")) == 0)
 
@@ -32,9 +33,16 @@ getData4curb = function(DID_CURB65) {
 
   # showNA(curb)
   curb[,CRB65 := sum(CRB, AGE, na.rm = T), .(PATSTUID, EVENT)]
-  curb[is.na(CRB)]
+  # curb[is.na(CRB)]
   curb$PATID_EXT = NULL
-  curb
+  erg <- list()
+  erg$input <- curb
+  curb <- curb[, .(patstuid = PATSTUID, event = EVENT, crb65 = CRB65,
+                   curb65 = CURB65)]
+  curb[, event := event2zeitpunkt(event, returnformat = "zp_fabianref")]
+  curb <- dcast(curb, patstuid ~ event, value.var = c("crb65", "curb65"))
+  erg$out <- curb
+  erg
 }
 
 # utils::globalVariables(c("PATSTUID", "EVENT", "AGE", "CRB", "CRB65", "."))
