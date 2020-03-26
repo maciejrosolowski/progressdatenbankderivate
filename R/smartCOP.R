@@ -26,7 +26,7 @@
 #' in the wide format (one row per patient), containing the data used for
 #' computing the smartCOP score. out is a data.table with one row
 #' corresponding to one patient, identified by the
-#' PATSTUID. The column smart.COP contains the value of smartCOP score.
+#' PATSTUID. The column smartCOP contains the value of smartCOP score.
 #' @export
 #'
 #' @examples
@@ -170,12 +170,12 @@ smartCOP <- function(FRM_RR,FRM_BEF, FRM_VIS,FRM_DIL_LABORWERTE,FRM_B24,
   #hist(smart.COP)
 
   # return(smart.COP)
-  res = data.table(smart.COP)
+  res = data.table(smartCOP = smart.COP)
   res$PATSTUID  = DAT$patstuid
-  res$event = zeitpunkt2event(zp_fabian)
+  res$EVENT = zeitpunkt2event(zp_fabian)
   # 2020-03-05 MRos: replace call to moveColFront for no dependency on toolboxH
   # res = moveColFront(res,c( "PATSTUID", 'event'))
-  res <- data.table::setcolorder(res, neworder = c( "PATSTUID", 'event'))
+  res <- data.table::setcolorder(res, neworder = c( "PATSTUID", "EVENT"))
   erg = c()
   erg$input  = DAT
   erg$input2 = c()

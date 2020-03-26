@@ -54,7 +54,7 @@ a named list with components: input and out. input is a data.table
 in the wide format (one row per patient), containing the data used for
 computing the smartCOP score. out is a data.table with one row
 corresponding to one patient, identified by the
-PATSTUID. The column smart.COP contains the value of smartCOP score.
+PATSTUID. The column smartCOP contains the value of smartCOP score.
 }
 \description{
 Compute the smartCOP score.
