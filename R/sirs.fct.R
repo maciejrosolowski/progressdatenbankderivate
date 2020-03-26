@@ -23,7 +23,7 @@
 #'
 #' @return a named list with components: input, input2 and out. out is
 #' a data.table with one row corresponding to a combination of PATSTUID
-#' (patient) and "event" (time point).
+#' (patient) and "EVENT" (time point).
 #' @export
 #'
 #' @examples
@@ -297,10 +297,10 @@ sirs.fct <- function(DID_PROBAND,FRM_BAS, FRM_BEF, FRM_B24,FRM_DIL_LABORWERTE,
 
   out = data.table(out)
   out$PATSTUID  = DAT$patstuid
-  out$event = zeitpunkt2event(zp_fabian)
+  out$EVENT = zeitpunkt2event(zp_fabian)
   # 2020-03-03 MRos: replace call to moveColFront for no dependency on toolboxH
   # out = moveColFront(out,c( "PATSTUID", 'event'))
-  out <- data.table::setcolorder(out, neworder = c( "PATSTUID", 'event'))
+  out <- data.table::setcolorder(out, neworder = c("PATSTUID", "EVENT"))
   erg = c()
   erg$input  = DAT
   erg$input2 = c()

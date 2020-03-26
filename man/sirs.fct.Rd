@@ -51,7 +51,7 @@ the package).}
 \value{
 a named list with components: input, input2 and out. out is
 a data.table with one row corresponding to a combination of PATSTUID
-(patient) and "event" (time point).
+(patient) and "EVENT" (time point).
 }
 \description{
 Compute the SIRS score.
