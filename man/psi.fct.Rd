@@ -51,7 +51,7 @@ the package).}
 \value{
 a named list with components: input, input2 and out. out is
 a data.table with one row corresponding to a combination of PATSTUID
-(patient) and "event" (time point). Column psi.class contains the PSI
+(patient) and "EVENT" (time point). Column psi.class contains the PSI
 values computed by imputing non-critical values, if some components
 of the score were missing. The column psi.class.fillt contains NAs, if
 any of the components needed for computing the PSI score were missing.

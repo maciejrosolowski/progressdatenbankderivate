@@ -23,7 +23,7 @@
 #'
 #' @return a named list with components: input, input2 and out. out is
 #' a data.table with one row corresponding to a combination of PATSTUID
-#' (patient) and "event" (time point). Column psi.class contains the PSI
+#' (patient) and "EVENT" (time point). Column psi.class contains the PSI
 #' values computed by imputing non-critical values, if some components
 #' of the score were missing. The column psi.class.fillt contains NAs, if
 #' any of the components needed for computing the PSI score were missing.
@@ -239,10 +239,10 @@ psi.fct <- function(DID_PROBAND,FRM_BAS, FRM_BEF, FRM_B24,FRM_RR,FRM_O2A,
   out<-data.frame(out,vollstaendig.von.20=nas)
   out = data.table(out)
   out$PATSTUID  = DAT$patstuid
-  out$event = zeitpunkt2event(zp_fabian)
+  out$EVENT = zeitpunkt2event(zp_fabian)
   # 2020-02-25 MRos: replace call to moveColFront for no dependency on toolboxH
   # out = moveColFront(out,c( "PATSTUID", 'event'))
-  out <- data.table::setcolorder(out, neworder = c( "PATSTUID", 'event'))
+  out <- data.table::setcolorder(out, neworder = c( "PATSTUID", "EVENT"))
   erg = c()
   erg$input  = DAT
   erg$input2 = list(DAT$patstuid, age,verwirrt,hfrq.max,afrq.max,sysbp.min,

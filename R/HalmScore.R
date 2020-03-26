@@ -151,10 +151,10 @@ HalmScore <- function (FRM_B24,FRM_BEF, FRM_RR, FRM_O2A, FRM_O2P,FRM_BEAT,
 
   res = data.table(halm)
   res$PATSTUID  = DAT$patstuid
-  res$event = zeitpunkt2event(zp_fabian)
+  res$EVENT = zeitpunkt2event(zp_fabian)
   # 2020-03-04 MRos: replace call to moveColFront for no dependency on toolboxH
   # res = moveColFront(res,c( "PATSTUID", 'event'))
-  res <- data.table::setcolorder(res, neworder = c( "PATSTUID", 'event'))
+  res <- data.table::setcolorder(res, neworder = c( "PATSTUID", "EVENT"))
   erg = c()
   erg$input  = DAT
   erg$input2 = c()
