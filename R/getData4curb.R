@@ -35,14 +35,15 @@ getData4curb = function(DID_CURB65) {
   curb[,CRB65 := sum(CRB, AGE, na.rm = T), .(PATSTUID, EVENT)]
   # curb[is.na(CRB)]
   curb$PATID_EXT = NULL
-  erg <- list()
-  erg$input <- curb
-  curb <- curb[, .(patstuid = PATSTUID, event = EVENT, crb65 = CRB65,
-                   curb65 = CURB65)]
-  curb[, event := event2zeitpunkt(event, returnformat = "zp_fabianref")]
-  curb <- dcast(curb, patstuid ~ event, value.var = c("crb65", "curb65"))
-  erg$out <- curb
-  erg
+  # erg <- list()
+  # erg$input <- curb
+  # curb <- curb[, .(patstuid = PATSTUID, event = EVENT, crb65 = CRB65,
+  #                  curb65 = CURB65)]
+  # curb[, event := event2zeitpunkt(event, returnformat = "zp_fabianref")]
+  # curb <- dcast(curb, patstuid ~ event, value.var = c("crb65", "curb65"))
+  # erg$out <- curb
+  # erg
+  curb[]
 }
 
 # utils::globalVariables(c("PATSTUID", "EVENT", "AGE", "CRB", "CRB65", "."))
