@@ -109,12 +109,12 @@ quickSOFA <- function (FRM_RR,FRM_B24,FRM_BEF,DID_CLIN, zp_fabian="auf_in_d0") {
   # sum(com>=1)
   # sum(com>=1)/1532
 
-  res = data.table(res)
+  res = data.table(qSOFA = res)
   res$PATSTUID  = DAT$patstuid
-  res$event = zeitpunkt2event(zp_fabian)
+  res$EVENT = zeitpunkt2event(zp_fabian)
   # 2020-03-03 MRos: replace call to moveColFront for no dependency on toolboxH
   # res = moveColFront(res,c( "PATSTUID", 'event'))
-  res <- data.table::setcolorder(res, neworder = c( "PATSTUID", 'event'))
+  res <- data.table::setcolorder(res, neworder = c( "PATSTUID", "EVENT"))
   erg = c()
   erg$input  = DAT
   erg$input2 = c()
