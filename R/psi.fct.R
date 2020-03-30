@@ -23,9 +23,9 @@
 #'
 #' @return a named list with components: input, input2 and out. out is
 #' a data.table with one row corresponding to a combination of PATSTUID
-#' (patient) and "EVENT" (time point). Column psi.class contains the PSI
+#' (patient) and "EVENT" (time point). Column "psi" contains the PSI
 #' values computed by imputing non-critical values, if some components
-#' of the score were missing. The column psi.class.fillt contains NAs, if
+#' of the score were missing. The column "psi_filt" contains NAs, if
 #' any of the components needed for computing the PSI score were missing.
 #' The column vollstaendig.von.20 contains information about the number of
 #' components having values available out of the overall 20 components
@@ -524,5 +524,5 @@ psi.I.to.V <-function(age,verwirrt,hfrq.max,afrq.max,sysbp.min,temp.min,temp.max
   psi.class.filt<-psi.class
   psi.class.filt[!filt]<-NA
 
-  return(cbind(psi.class.filt,psi.class))
+  return(data.frame(psi = psi.class, psi_filt = psi.class.filt))
 }
