@@ -3,6 +3,7 @@
 export("%>%")
 export(HalmScore)
 export(SCAP)
+export(curb65.fct)
 export(event2zeitpunkt)
 export(extractComorbScore)
 export(extractProbandInfos)
