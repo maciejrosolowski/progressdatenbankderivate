@@ -92,7 +92,7 @@ curb65.fct<- function(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE,
     for (i in 1:length(variables)){
       col_in_DAT <- paste(variables[i], zp_fabian, sep="_")
       if (col_in_DAT %in% colnames(DAT)){
-        assign(variables[i], DAT[,col_in_DAT, with = FALSE] )
+        assign(variables[i], DAT[[col_in_DAT]] )
       } else {
         assign(variables[i], rep(NA,N) )
       }
@@ -102,12 +102,12 @@ curb65.fct<- function(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE,
       col1_in_DAT <- paste(variables[i],"auf",sep="_")
       col2_in_DAT <- paste(variables[i],"d0",sep="_")
       if (col1_in_DAT %in% colnames(DAT)){
-        dum1 <- DAT[,col1_in_DAT, with = FALSE]
+        dum1 <- DAT[[col1_in_DAT]]
       } else {
         dum1 <- rep(NA,N)
       }
       if (col2_in_DAT %in% colnames(DAT)){
-        dum2 <- DAT[,col2_in_DAT, with = FALSE]
+        dum2 <- DAT[[col2_in_DAT]]
       } else {
         dum2 <- rep(NA,N)
       }
@@ -125,7 +125,7 @@ curb65.fct<- function(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE,
       assign(variables[i], dum )
     }
   }
-  curbi<-curb65(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age)[,c(2,1)]
+  curbi<-curb65(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age) #[,c(2,1)]
 
   nas  <- 6 - c(is.na(verwirrt) +
                   is.na(bun) +
@@ -178,5 +178,12 @@ curb65<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age){
   curb.vollst        <- curb
   curb.vollst[!filt] <- NA
 
-  return(cbind(curb.vollst,curb))
+  curb_components <-
+    data.frame(verwirrt_curb65 = as.numeric(verwirrt == 1),
+               bun_curb65 = as.numeric(bun > 7),
+               afrq.max_curb65 = as.numeric(afrq.max >= 30),
+               bp_curb65 = as.numeric(sysbp.min < 90 | diasbp.min < 60),
+               age_curb65 = as.numeric(age >= 65))
+
+  return(cbind(curb.vollst,curb, curb_components))
 }
