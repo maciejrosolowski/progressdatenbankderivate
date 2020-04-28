@@ -133,7 +133,9 @@ curb65.fct<- function(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE,
                   is.na(sysbp.min) +
                   is.na(diasbp.min) +
                   is.na(age))
+  input <- data.frame(verwirrt, bun, afrq.max, sysbp.min, diasbp.min, age)
   curbi<-data.frame(curbi,vollstaendig.aus.6=nas)
+  erg <- list(input = input, out = curbi)
 }
 
 
@@ -142,6 +144,12 @@ curb65<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age){
   #Filter
   filt<- !(is.na(verwirrt) | is.na(bun) | is.na(afrq.max) | is.na(sysbp.min) |
              is.na(diasbp.min))
+  is_na_df <- data.frame(is_na_verwirrt = is.na(verwirrt),
+                         is_na_bun = is.na(bun),
+                         is_na_afrq.max = is.na(afrq.max),
+                         is_na_sysbp.min = is.na(sysbp.min),
+                         is_na_diasbp.min = is.na(diasbp.min),
+                         is_na_age = is.na(age))
 
   #Auffuellen
   verwirrt[is.na(verwirrt)]    <- 0
@@ -185,5 +193,5 @@ curb65<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age){
                bp_curb65 = as.numeric(sysbp.min < 90 | diasbp.min < 60),
                age_curb65 = as.numeric(age >= 65))
 
-  return(cbind(curb.vollst,curb, curb_components))
+  return(cbind(curb.vollst,curb, curb_components, is_na_df))
 }
