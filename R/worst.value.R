@@ -10,7 +10,7 @@
 worst.value <- function(dum1,dum2,variable){
   min.set <- c("leuko_min","map","sysbp.min","bemin","diur","oxi.ind",
                "thrombo_min","pco2","sysbp.min","temp.min","art.ph.min","snat",
-               "haemkrt","apo2.min","diabp.min")
+               "haemkrt","apo2.min","diasbp.min")
   max.set <- c("leuko_max","kate","chr.lunge","verwirrt","hfrq.max","afrq.max",
                "temp.max","bun","gluk","pleu_erg")
 
