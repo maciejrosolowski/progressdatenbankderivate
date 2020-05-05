@@ -23,8 +23,7 @@ devtools::install_github("maciejrosolowski/progressdatenbankderivate")
 
 ## Example
 
-This is an example which shows how to compute the Pneumonia Severity
-Index (PSI):
+Read the data exported from the database of the PROGRESS project
 
 ``` r
 library(readxl)
@@ -41,6 +40,11 @@ FRM_RR <- readxl::read_excel(excel_fn, 'FRM_RR', guess_max = 10e5)
 FRM_O2A <- readxl::read_excel(excel_fn, 'FRM_O2A')
 FRM_DIL_LABORWERTE <- readxl::read_excel(excel_fn, "FRM_DIL_LABORWERTE")
 FRM_VIS <- readxl::read_excel(excel_fn, 'FRM_VIS')
+DID_CLIN <- readxl::read_excel(excel_fn, 'DID_CLIN')
+FRM_KAT <- readxl::read_excel(excel_fn, 'FRM_KAT')
+FRM_O2P <- readxl::read_excel(excel_fn, 'FRM_O2P')
+FRM_BEAT <- readxl::read_excel(excel_fn, 'FRM_BEAT', guess_max = 10e5)
+DID_OXYGENIND_SINGLE <- readxl::read_excel(excel_fn, 'DID_OXYGENIND_SINGLE')
 data.table::setDT(DID_PROBAND)
 data.table::setDT(FRM_BAS)
 data.table::setDT(FRM_BEF)
@@ -49,26 +53,152 @@ data.table::setDT(FRM_RR)
 data.table::setDT(FRM_O2A)
 data.table::setDT(FRM_DIL_LABORWERTE)
 data.table::setDT(FRM_VIS)
+data.table::setDT(DID_CLIN)
+data.table::setDT(FRM_KAT)
+data.table::setDT(FRM_O2P)
+data.table::setDT(FRM_BEAT)
+data.table::setDT(DID_OXYGENIND_SINGLE)
+```
+
+### PSI
+
+This is an example which shows how to compute the Pneumonia Severity
+Index
+(PSI):
+
+``` r
 # suppress warnings about no non-missing values while computing min or max
 # by PATSTUID and EVENT.
 suppressWarnings(
-  erg_d0 <- psi.fct(DID_PROBAND, FRM_BAS, FRM_BEF, FRM_B24, FRM_RR, FRM_O2A, 
-                  FRM_DIL_LABORWERTE,FRM_VIS, zp_fabian = "d0")
+  psi_d0 <- psi.fct(DID_PROBAND, FRM_BAS, FRM_BEF, FRM_B24, FRM_RR, FRM_O2A, 
+                    FRM_DIL_LABORWERTE,FRM_VIS, zp_fabian = "d0")$out[
+                      , .(PATSTUID, EVENT, psi)]
 )
-erg_d0$out
-#>       PATSTUID event psi.class psi.class.filt vollstaendig.von.20
-#>    1:     5635     3         1             NA                  17
-#>    2:     5656     3         3             NA                  17
-#>    3:     5663     3         4             NA                   8
-#>    4:     5674     3         4             NA                  19
-#>    5:     5681     3         3             NA                   9
-#>   ---                                                            
-#> 2209:   238909     3         2             NA                   1
-#> 2210:   240062     3         2             NA                   1
-#> 2211:   242021     3         2             NA                   0
-#> 2212:   244008     3         2             NA                   1
-#> 2213:     9435     3         2             NA                   1
-# erg_d1 <- psi.fct(DID_PROBAND, FRM_BAS, FRM_BEF, FRM_B24, FRM_RR, FRM_O2A,
-# FRM_DIL_LABORWERTE,FRM_VIS, zp_fabian = "d1")
-# erg_d1
+psi_d0
+#>       PATSTUID EVENT psi
+#>    1:     5635     3   1
+#>    2:     5656     3   3
+#>    3:     5663     3   4
+#>    4:     5674     3   4
+#>    5:     5681     3   3
+#>   ---                   
+#> 2209:   238909     3   2
+#> 2210:   240062     3   2
+#> 2211:   242021     3   2
+#> 2212:   244008     3   2
+#> 2213:     9435     3   2
+```
+
+### SIRS
+
+``` r
+suppressWarnings(
+  sirs_d0 <- sirs.fct(DID_PROBAND, FRM_BAS, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE,
+                      DID_CLIN, FRM_RR, FRM_KAT, zp_fabian = "d0")$out[
+                        , .(PATSTUID, EVENT, sirs = infec.septic.servsept,
+                   schock = septischer.schock)]
+)
+sirs_d0
+#>       PATSTUID EVENT sirs schock
+#>    1:     5635     3    2  FALSE
+#>    2:     5656     3    2  FALSE
+#>    3:     5663     3    1  FALSE
+#>    4:     5674     3    1  FALSE
+#>    5:     5681     3    2  FALSE
+#>   ---                           
+#> 2209:   238909     3    1  FALSE
+#> 2210:   240062     3    1  FALSE
+#> 2211:   242021     3    1  FALSE
+#> 2212:   244008     3    1  FALSE
+#> 2213:     9435     3    1  FALSE
+```
+
+### quickSOFA
+
+``` r
+suppressWarnings(
+  qsofa <- quickSOFA(FRM_RR, FRM_B24, FRM_BEF, DID_CLIN,
+                     zp_fabian = "auf_in_d0")$out
+)
+qsofa
+#>       PATSTUID EVENT qSOFA
+#>    1:     1564    31     1
+#>    2:     1591    31     0
+#>    3:     1680    31     1
+#>    4:     1740    31     2
+#>    5:     1790    31     0
+#>   ---                     
+#> 2209:    88954    31     0
+#> 2210:   184339    31     0
+#> 2211:   231590    31     0
+#> 2212:   231626    31     0
+#> 2213:   242021    31     1
+```
+
+### Halm
+
+``` r
+suppressWarnings(
+  halm <- HalmScore(FRM_B24, FRM_BEF, FRM_RR, FRM_O2A, FRM_O2P, FRM_BEAT,
+                    DID_CLIN, zp_fabian = "auf_in_d-1_in_d0")$out
+)
+halm
+#>       PATSTUID EVENT halm
+#>    1:     1564   321    1
+#>    2:     1586   321    0
+#>    3:     1591   321    1
+#>    4:     1680   321    3
+#>    5:     1740   321    2
+#>   ---                    
+#> 2209:   243434   321    3
+#> 2210:   243708   321    3
+#> 2211:   243719   321    4
+#> 2212:   244008   321    1
+#> 2213:     9435   321    0
+```
+
+### SCAP
+
+``` r
+suppressWarnings(
+  scap <- SCAP(FRM_B24, FRM_O2A, FRM_RR, FRM_BEF, FRM_DIL_LABORWERTE, DID_CLIN,
+               DID_PROBAND, FRM_VIS, DID_OXYGENIND_SINGLE,
+               zp_fabian = "auf_in_d-1_in_d0")$out
+)
+scap
+#>       PATSTUID EVENT SCAP
+#>    1:     1564   321    0
+#>    2:     1586   321    0
+#>    3:     1591   321    0
+#>    4:     1680   321    5
+#>    5:     1740   321   21
+#>   ---                    
+#> 2209:   243434   321    6
+#> 2210:   243708   321   11
+#> 2211:   243719   321   11
+#> 2212:   244008   321    6
+#> 2213:     9435   321    0
+```
+
+### smartCOP
+
+``` r
+suppressWarnings(
+  smart_cop <- smartCOP(FRM_RR, FRM_BEF, FRM_VIS, FRM_DIL_LABORWERTE, FRM_B24,
+                        DID_PROBAND, DID_CLIN, DID_OXYGENIND_SINGLE,
+                        FRM_O2A, zp_fabian = "auf_in_d-1_in_d0")$out
+)
+smart_cop
+#>       PATSTUID EVENT smartCOP
+#>    1:     1564   321        0
+#>    2:     1591   321        2
+#>    3:     1680   321        1
+#>    4:     1740   321        3
+#>    5:     1790   321        2
+#>   ---                        
+#> 2209:    88954   321        0
+#> 2210:   184339   321        0
+#> 2211:   231590   321        0
+#> 2212:   231626   321        0
+#> 2213:   242021   321        1
 ```

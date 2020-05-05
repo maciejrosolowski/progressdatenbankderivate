@@ -32,10 +32,9 @@ devtools::install_github("maciejrosolowski/progressdatenbankderivate")
 ```
 ## Example
 
-This is an example which shows how to compute the Pneumonia Severity Index
-(PSI):
+Read the data exported from the database of the PROGRESS project
 
-```{r example}
+```{r}
 library(readxl)
 library(data.table)
 library(progressdatenbankderivate)
@@ -50,6 +49,11 @@ FRM_RR <- readxl::read_excel(excel_fn, 'FRM_RR', guess_max = 10e5)
 FRM_O2A <- readxl::read_excel(excel_fn, 'FRM_O2A')
 FRM_DIL_LABORWERTE <- readxl::read_excel(excel_fn, "FRM_DIL_LABORWERTE")
 FRM_VIS <- readxl::read_excel(excel_fn, 'FRM_VIS')
+DID_CLIN <- readxl::read_excel(excel_fn, 'DID_CLIN')
+FRM_KAT <- readxl::read_excel(excel_fn, 'FRM_KAT')
+FRM_O2P <- readxl::read_excel(excel_fn, 'FRM_O2P')
+FRM_BEAT <- readxl::read_excel(excel_fn, 'FRM_BEAT', guess_max = 10e5)
+DID_OXYGENIND_SINGLE <- readxl::read_excel(excel_fn, 'DID_OXYGENIND_SINGLE')
 data.table::setDT(DID_PROBAND)
 data.table::setDT(FRM_BAS)
 data.table::setDT(FRM_BEF)
@@ -58,14 +62,80 @@ data.table::setDT(FRM_RR)
 data.table::setDT(FRM_O2A)
 data.table::setDT(FRM_DIL_LABORWERTE)
 data.table::setDT(FRM_VIS)
+data.table::setDT(DID_CLIN)
+data.table::setDT(FRM_KAT)
+data.table::setDT(FRM_O2P)
+data.table::setDT(FRM_BEAT)
+data.table::setDT(DID_OXYGENIND_SINGLE)
+```
+
+### PSI
+
+This is an example which shows how to compute the Pneumonia Severity Index
+(PSI):
+
+```{r example}
 # suppress warnings about no non-missing values while computing min or max
 # by PATSTUID and EVENT.
 suppressWarnings(
-  erg_d0 <- psi.fct(DID_PROBAND, FRM_BAS, FRM_BEF, FRM_B24, FRM_RR, FRM_O2A, 
-                  FRM_DIL_LABORWERTE,FRM_VIS, zp_fabian = "d0")
+  psi_d0 <- psi.fct(DID_PROBAND, FRM_BAS, FRM_BEF, FRM_B24, FRM_RR, FRM_O2A, 
+                    FRM_DIL_LABORWERTE,FRM_VIS, zp_fabian = "d0")$out[
+                      , .(PATSTUID, EVENT, psi)]
 )
-erg_d0$out
-# erg_d1 <- psi.fct(DID_PROBAND, FRM_BAS, FRM_BEF, FRM_B24, FRM_RR, FRM_O2A,
-# FRM_DIL_LABORWERTE,FRM_VIS, zp_fabian = "d1")
-# erg_d1
+psi_d0
 ```
+
+### SIRS
+
+```{r}
+suppressWarnings(
+  sirs_d0 <- sirs.fct(DID_PROBAND, FRM_BAS, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE,
+                      DID_CLIN, FRM_RR, FRM_KAT, zp_fabian = "d0")$out[
+                        , .(PATSTUID, EVENT, sirs = infec.septic.servsept,
+                   schock = septischer.schock)]
+)
+sirs_d0
+```
+
+### quickSOFA
+
+```{r}
+suppressWarnings(
+  qsofa <- quickSOFA(FRM_RR, FRM_B24, FRM_BEF, DID_CLIN,
+                     zp_fabian = "auf_in_d0")$out
+)
+qsofa
+```
+
+### Halm
+
+```{r}
+suppressWarnings(
+  halm <- HalmScore(FRM_B24, FRM_BEF, FRM_RR, FRM_O2A, FRM_O2P, FRM_BEAT,
+                    DID_CLIN, zp_fabian = "auf_in_d-1_in_d0")$out
+)
+halm
+```
+
+### SCAP
+
+```{r}
+suppressWarnings(
+  scap <- SCAP(FRM_B24, FRM_O2A, FRM_RR, FRM_BEF, FRM_DIL_LABORWERTE, DID_CLIN,
+               DID_PROBAND, FRM_VIS, DID_OXYGENIND_SINGLE,
+               zp_fabian = "auf_in_d-1_in_d0")$out
+)
+scap
+```
+
+### smartCOP
+
+```{r}
+suppressWarnings(
+  smart_cop <- smartCOP(FRM_RR, FRM_BEF, FRM_VIS, FRM_DIL_LABORWERTE, FRM_B24,
+                        DID_PROBAND, DID_CLIN, DID_OXYGENIND_SINGLE,
+                        FRM_O2A, zp_fabian = "auf_in_d-1_in_d0")$out
+)
+smart_cop
+```
+
