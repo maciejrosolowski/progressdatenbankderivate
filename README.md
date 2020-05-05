@@ -202,3 +202,67 @@ smart_cop
 #> 2212:   231626   321        0
 #> 2213:   242021   321        1
 ```
+
+## How to compute the scores based on values of the input parameters
+
+### PSI
+
+``` r
+psi <- psi_simple(
+  age = 68,
+  verwirrt = 1,
+  hfrq.max = 130,
+  afrq.max = 35,
+  sysbp.min = 80,
+  temp.min = 34,
+  temp.max = 35,
+  tumor = 1,
+  herz = 1,
+  cerebro = 1,
+  renal = 1,
+  liver = 1,
+  gender = 1,
+  nurse.home = 1,
+  art.ph.min = 7.2,
+  bun = 10,
+  snat = 120,
+  gluk = 16,
+  haemkrt = 0.2,
+  apo2.min = 50,
+  pleu_erg = 1)
+psi
+#> [1] 5
+```
+
+### SIRS
+
+``` r
+progressdatenbankderivate:::sirs.day(
+  temp.min = 34, 
+  temp.max = 35, 
+  hfrq.max = 130, 
+  afrq.max = 35, 
+  pco2 = 4.1, 
+  leuko_min = 7800, 
+  leuko_max = 10400, 
+  stkern.neutro = 395, 
+  smkern.neutro = 2110, 
+  verwirrt = 1,
+  thrombo_min = 342000, 
+  thrombo.daybefore = 308000,
+  oxi.ind = 43.81,
+  chr.lunge = 1,
+  diur = 3120,
+  gewicht = 87, 
+  bemin = 3.4, 
+  sysbp.min = 95, 
+  map = 10.22,
+  kate = FALSE)
+#> [[1]]
+#>                 krit.I krit.II krit.III sepsis schwere.sepsis septischer.schock
+#> sum.krit.vollst      1       4        1   TRUE           TRUE             FALSE
+#> 
+#> [[2]]
+#>          krit.I krit.II krit.III sepsis schwere.sepsis septischer.schock
+#> sum.krit      1       4        1   TRUE           TRUE             FALSE
+```
