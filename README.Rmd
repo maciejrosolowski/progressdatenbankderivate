@@ -169,9 +169,38 @@ psi <- psi_simple(
 psi
 ```
 
-### SIRS
+An example with vectors as arguments in the function call
 
 ```{r}
+psi <- psi_simple(
+  age = c(68, 61),
+  verwirrt = c(1, 0),
+  hfrq.max = c(130, 125),
+  afrq.max = c(35, 26),
+  sysbp.min = c(80, 98),
+  temp.min = c(34, 36),
+  temp.max = c(35, 37),
+  tumor = c(1, 0),
+  herz = c(1, 0),
+  cerebro = c(1, 0),
+  renal = c(1, 0),
+  liver = c(1, 0),
+  gender = c(1, 0),
+  nurse.home = c(1, 0),
+  art.ph.min = c(7.2, 7.5),
+  bun = c(10, 11),
+  snat = c(120, 134),
+  gluk = c(16, 9),
+  haemkrt = c(0.2, 0.25),
+  apo2.min = c(50, 52),
+  pleu_erg = c(1, 0))
+psi
+```
+
+
+
+```{r include=FALSE}
+### SIRS
 progressdatenbankderivate:::sirs.day(
   temp.min = 34, 
   temp.max = 35, 

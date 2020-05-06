@@ -234,35 +234,31 @@ psi
 #> [1] 5
 ```
 
-### SIRS
+An example with vectors as arguments in the function call
 
 ``` r
-progressdatenbankderivate:::sirs.day(
-  temp.min = 34, 
-  temp.max = 35, 
-  hfrq.max = 130, 
-  afrq.max = 35, 
-  pco2 = 4.1, 
-  leuko_min = 7800, 
-  leuko_max = 10400, 
-  stkern.neutro = 395, 
-  smkern.neutro = 2110, 
-  verwirrt = 1,
-  thrombo_min = 342000, 
-  thrombo.daybefore = 308000,
-  oxi.ind = 43.81,
-  chr.lunge = 1,
-  diur = 3120,
-  gewicht = 87, 
-  bemin = 3.4, 
-  sysbp.min = 95, 
-  map = 10.22,
-  kate = FALSE)
-#> [[1]]
-#>                 krit.I krit.II krit.III sepsis schwere.sepsis septischer.schock
-#> sum.krit.vollst      1       4        1   TRUE           TRUE             FALSE
-#> 
-#> [[2]]
-#>          krit.I krit.II krit.III sepsis schwere.sepsis septischer.schock
-#> sum.krit      1       4        1   TRUE           TRUE             FALSE
+psi <- psi_simple(
+  age = c(68, 61),
+  verwirrt = c(1, 0),
+  hfrq.max = c(130, 125),
+  afrq.max = c(35, 26),
+  sysbp.min = c(80, 98),
+  temp.min = c(34, 36),
+  temp.max = c(35, 37),
+  tumor = c(1, 0),
+  herz = c(1, 0),
+  cerebro = c(1, 0),
+  renal = c(1, 0),
+  liver = c(1, 0),
+  gender = c(1, 0),
+  nurse.home = c(1, 0),
+  art.ph.min = c(7.2, 7.5),
+  bun = c(10, 11),
+  snat = c(120, 134),
+  gluk = c(16, 9),
+  haemkrt = c(0.2, 0.25),
+  apo2.min = c(50, 52),
+  pleu_erg = c(1, 0))
+psi
+#> [1] 5 4
 ```
