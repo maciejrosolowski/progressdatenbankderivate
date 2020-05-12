@@ -197,30 +197,47 @@ psi <- psi_simple(
 psi
 ```
 
-
-
-```{r include=FALSE}
 ### SIRS
-progressdatenbankderivate:::sirs.day(
-  temp.min = 34, 
-  temp.max = 35, 
-  hfrq.max = 130, 
-  afrq.max = 35, 
-  pco2 = 4.1, 
-  leuko_min = 7800, 
-  leuko_max = 10400, 
-  stkern.neutro = 395, 
-  smkern.neutro = 2110, 
+
+```{r}
+sirs <- sirs_simple(
+  temp.min = 34,
+  temp.max = 35,
+  hfrq.max = 104,
+  afrq.max = 20,
+  pco2 = 4.1,
+  leuko_min = 7800,
+  leuko_max = 7900,
+  stkern.neutro = 395,
+  smkern.neutro = 4424,
   verwirrt = 1,
-  thrombo_min = 342000, 
-  thrombo.daybefore = 308000,
+  thrombo_min = 216000,
+  thrombo.daybefore = 205000,
   oxi.ind = 43.81,
   chr.lunge = 1,
   diur = 3120,
-  gewicht = 87, 
-  bemin = 3.4, 
-  sysbp.min = 95, 
-  map = 10.22,
+  gewicht = 70,
+  bemin = 3.4,
+  sysbp.min = 95,
+  map = 10.44,
   kate = FALSE)
+sirs
+```
+
+### Halm
+
+```{r}
+halm <- HalmScore_simple(
+  hfrq.max = 104,
+  sysbp.min = 95,
+  afrq.max = 19,
+  o2p.min = 90,
+  apo2.min = 50,
+  bea = 1,
+  sauerst = 0,
+  temp.max = 38,
+  verwirrt = 0,
+  gcs = 15)
+halm
 ```
 

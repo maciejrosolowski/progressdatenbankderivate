@@ -2,6 +2,7 @@
 
 export("%>%")
 export(HalmScore)
+export(HalmScore_simple)
 export(SCAP)
 export(curb65.fct)
 export(event2zeitpunkt)

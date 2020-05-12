@@ -262,3 +262,53 @@ psi <- psi_simple(
 psi
 #> [1] 5 4
 ```
+
+### SIRS
+
+``` r
+sirs <- sirs_simple(
+  temp.min = 34,
+  temp.max = 35,
+  hfrq.max = 104,
+  afrq.max = 20,
+  pco2 = 4.1,
+  leuko_min = 7800,
+  leuko_max = 7900,
+  stkern.neutro = 395,
+  smkern.neutro = 4424,
+  verwirrt = 1,
+  thrombo_min = 216000,
+  thrombo.daybefore = 205000,
+  oxi.ind = 43.81,
+  chr.lunge = 1,
+  diur = 3120,
+  gewicht = 70,
+  bemin = 3.4,
+  sysbp.min = 95,
+  map = 10.44,
+  kate = FALSE)
+sirs
+#> $infec.septic.servsept
+#> [1] 3
+#> 
+#> $shock
+#> [1] FALSE
+```
+
+### Halm
+
+``` r
+halm <- HalmScore_simple(
+  hfrq.max = 104,
+  sysbp.min = 95,
+  afrq.max = 19,
+  o2p.min = 90,
+  apo2.min = 50,
+  bea = 1,
+  sauerst = 0,
+  temp.max = 38,
+  verwirrt = 0,
+  gcs = 15)
+halm
+#> [1] 3
+```
