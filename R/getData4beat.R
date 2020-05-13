@@ -17,7 +17,7 @@
 #' excel_fn <- paste0("/net/ifs1/san_projekte/projekte/",
 #' "PROGRESS/Datenmanagement/Data_freezes/",
 #' "20190320/PROGRESS-freeze_201903_01.xlsx")
-#' FRM_BEAT <- readxl::read_excel(excel_fn, 'FRM_BEAT')
+#' FRM_BEAT <- readxl::read_excel(excel_fn, 'FRM_BEAT', guess_max = 10e5)
 #' data.table::setDT(FRM_BEAT)
 #' toadd_beat <- getData4beat(FRM_BEAT)
 #' toadd_beat
@@ -62,7 +62,7 @@ getData4beat <- function(FRM_BEAT) {
 
   toadd_beat = dcast.data.table(beat, patstuid ~ event,
                                 value.var =
-                                  c("maske", "intub", "trkan", "atall"))
+                                  c("maske", "intub", "trkan", "atall", "patbea"))
   renaming= data.table(old = setdiff(names(toadd_beat),"patstuid"))
   # renaming[,typ:=stringr::str_split(old, "_") %>% sapply(.,"[",1)]
   renaming[, typ := strsplit(old, "_") %>% sapply(.,"[",1)]
