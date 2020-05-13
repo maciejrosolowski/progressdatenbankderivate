@@ -180,7 +180,7 @@ curb65<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age){
     if(afrq.max[i]>=30){
       count<-count+1
     }
-    if( (sysbp.min[i]<90) | (diasbp.min[i]<60) ){
+    if( (sysbp.min[i]<90) | (diasbp.min[i]<=60) ){
       count<-count+1
     }
     if(age[i]>=65){
@@ -196,7 +196,7 @@ curb65<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age){
     data.frame(verwirrt_curb65 = as.numeric(verwirrt == 1),
                bun_curb65 = as.numeric(bun > 7),
                afrq.max_curb65 = as.numeric(afrq.max >= 30),
-               bp_curb65 = as.numeric(sysbp.min < 90 | diasbp.min < 60),
+               bp_curb65 = as.numeric(sysbp.min < 90 | diasbp.min <= 60),
                age_curb65 = as.numeric(age >= 65))
 
   # return(cbind(curb.vollst,curb, curb_components, is_na_df))
