@@ -74,6 +74,9 @@ getData4beat <- function(FRM_BEAT) {
   renaming[
     typ =="atall", newname :=
       paste0("bea.", event2zeitpunkt(event, returnformat = "zp_fabianref"))]
+  # 2020-05-13 MRos: zp_fabian as suffix (not prefix) for curb65.fct
+  renaming[typ == "patbea", newname := paste(typ, event2zeitpunkt(
+    event, returnformat = "zp_fabianref"), sep = "_")]
 
   setnames(toadd_beat,  renaming$old, renaming$newname)
   toadd_beat

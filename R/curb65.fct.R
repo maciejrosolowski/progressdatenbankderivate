@@ -10,6 +10,8 @@
 #'  name from the database of the PROGRESS study
 #' @param FRM_RR data.table containing the table with the same name from
 #'  the database of the PROGRESS study
+#' @param FRM_BEAT data.table containing the table with the same name from
+#'  the database of the PROGRESS study
 #' @param zp_fabian vector of characters. They must be present in
 #' event2zeitpunkt_table$zp_fabianref.
 #' @param event2zeitpunkt_df data.table event2zeitpunkt_table (available with
@@ -20,6 +22,9 @@
 #' computing the CURB65 score. out is a data.table with one row
 #' corresponding to one patient, identified by the
 #' PATSTUID. The column curb contains the value of CURB65 score.
+#' Note: The calculation of the respiratory component of the CURB65 score
+#' differs from the original definition of CURB65. Patients who are ventilated
+#' are counted as if they their respiratory rate >= 30.
 #' @export
 #'
 #' @examples
@@ -32,21 +37,23 @@
 #' FRM_B24 <- readxl::read_excel(excel_fn, 'FRM_B24')
 #' FRM_DIL_LABORWERTE <- readxl::read_excel(excel_fn, 'FRM_DIL_LABORWERTE')
 #' FRM_RR <- readxl::read_excel(excel_fn, 'FRM_RR', guess_max = 10e5)
+#' FRM_BEAT <- readxl::read_excel(excel_fn, 'FRM_BEAT', guess_max = 10e5)
 #' data.table::setDT(DID_PROBAND)
 #' data.table::setDT(FRM_BEF)
 #' data.table::setDT(FRM_B24)
 #' data.table::setDT(FRM_DIL_LABORWERTE)
 #' data.table::setDT(FRM_RR)
+#' data.table::setDT(FRM_BEAT)
 #' erg <- curb65.fct(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE, FRM_RR,
-#' zp_fabian = "d0")
+#' FRM_BEAT, zp_fabian = "d0")
 #' erg
 #' }
 curb65.fct<- function(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE,
-                      FRM_RR, zp_fabian = "d0",
+                      FRM_RR, FRM_BEAT, zp_fabian = "d0",
                       event2zeitpunkt_df =
                         progressdatenbankderivate::event2zeitpunkt_table){
   # due to non-standard evaluation notes in R CMD check
-  verwirrt <- bun <- afrq.max <- sysbp.min <- diasbp.min <- NULL
+  verwirrt <- bun <- afrq.max <- sysbp.min <- diasbp.min <- patbea <- NULL
 
   # if (!(time %in% c("auf","d0","d1","d2","d3","d4","auf_in_d0","d0_in_auf",
   #                   "auf+d0"))){
@@ -75,18 +82,23 @@ curb65.fct<- function(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE,
   # Diastolischer Blutdruck (in mmHG)
   toadd_diasbp.min <- getData4diasbp.min(FRM_RR)
 
+  # 2020-05-13 MRos: Beatmung
+  # als Kriterium alternativ zur Atemfrequenz
+  toadd_beat <- getData4beat(FRM_BEAT)
+
   # zusammenbauen DAT
   DAT = merge(toadd_agesex, toadd_verwirrt, by= "patstuid", all = T,sort = F)
   DAT = merge(DAT, toadd_bun, by= "patstuid", all = T,sort = F)
   DAT = merge(DAT, toadd_afrq.max, by= "patstuid", all = T,sort = F)
   DAT = merge(DAT, toadd_sysbp.min, by= "patstuid", all = T,sort = F)
   DAT = merge(DAT, toadd_diasbp.min, by= "patstuid", all = T,sort = F)
+  DAT = merge(DAT, toadd_beat, by= "patstuid", all = T,sort = F)
 
   # generic
   age           <-DAT$age
 
   # time dependent
-  variables<- c("verwirrt","bun","afrq.max","sysbp.min","diasbp.min")
+  variables<- c("verwirrt","bun","afrq.max","sysbp.min","diasbp.min", "patbea")
   N<-dim(DAT)[1]
   if (zp_fabian %in% c("auf","d0","d1","d2","d3","d4")){
     for (i in 1:length(variables)){
@@ -125,31 +137,33 @@ curb65.fct<- function(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE,
       assign(variables[i], dum )
     }
   }
-  curbi<-curb65(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age) #[,c(2,1)]
+  curbi<-curb65(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age, patbea)
+  #[,c(2,1)]
 
-  nas  <- 6 - c(is.na(verwirrt) +
+  nas  <- 7 - c(is.na(verwirrt) +
                   is.na(bun) +
                   is.na(afrq.max) +
                   is.na(sysbp.min) +
                   is.na(diasbp.min) +
-                  is.na(age))
+                  is.na(age) +
+                  is.na(patbea))
   input <- data.table(PATSTUID = DAT$patstuid,
                       EVENT = zeitpunkt2event(zp_fabian),
                       verwirrt, bun, afrq.max,
-                      sysbp.min, diasbp.min, age)
+                      sysbp.min, diasbp.min, age, patbea)
   curbi <- data.table(PATSTUID = DAT$patstuid,
                       EVENT = zeitpunkt2event(zp_fabian),
-                      curbi, vollstaendig.aus.6=nas)
+                      curbi, vollstaendig.aus.7=nas)
   # erg <- list(input = input, out = curbi)
   erg <- list(out = cbind(curbi, input[, !c("PATSTUID", "EVENT")]))
 }
 
 
-curb65<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age){
+curb65<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age, patbea){
 
   #Filter
   filt<- !(is.na(verwirrt) | is.na(bun) | is.na(afrq.max) | is.na(sysbp.min) |
-             is.na(diasbp.min))
+             is.na(diasbp.min) | is.na(patbea))
   # is_na_df <- data.frame(is_na_verwirrt = is.na(verwirrt),
   #                        is_na_bun = is.na(bun),
   #                        is_na_afrq.max = is.na(afrq.max),
@@ -164,6 +178,7 @@ curb65<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age){
   sysbp.min[is.na(sysbp.min)]  <- 120
   diasbp.min[is.na(diasbp.min)]  <- 80
   age[is.na(age)]              <- 60
+  patbea[is.na(patbea)] <- FALSE
 
   N    <- length(verwirrt)
   curb <- rep(NA,N)
@@ -177,7 +192,7 @@ curb65<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age){
     if(bun[i]>7){
       count<-count+1
     }
-    if(afrq.max[i]>=30){
+    if(afrq.max[i]>=30 | patbea[i]){
       count<-count+1
     }
     if( (sysbp.min[i]<90) | (diasbp.min[i]<=60) ){
@@ -195,7 +210,7 @@ curb65<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age){
   curb_components <-
     data.frame(verwirrt_curb65 = as.numeric(verwirrt == 1),
                bun_curb65 = as.numeric(bun > 7),
-               afrq.max_curb65 = as.numeric(afrq.max >= 30),
+               afrq.max_curb65 = as.numeric(afrq.max >= 30 | patbea),
                bp_curb65 = as.numeric(sysbp.min < 90 | diasbp.min <= 60),
                age_curb65 = as.numeric(age >= 65))
 

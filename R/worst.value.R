@@ -12,7 +12,7 @@ worst.value <- function(dum1,dum2,variable){
                "thrombo_min","pco2","sysbp.min","temp.min","art.ph.min","snat",
                "haemkrt","apo2.min","diasbp.min")
   max.set <- c("leuko_max","kate","chr.lunge","verwirrt","hfrq.max","afrq.max",
-               "temp.max","bun","gluk","pleu_erg")
+               "temp.max","bun","gluk","pleu_erg", "patbea")
 
   if (variable %in% min.set){
     dum<-apply (cbind(dum1,dum2),1,function(x){

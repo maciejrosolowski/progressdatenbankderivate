@@ -10,6 +10,7 @@ curb65.fct(
   FRM_B24,
   FRM_DIL_LABORWERTE,
   FRM_RR,
+  FRM_BEAT,
   zp_fabian = "d0",
   event2zeitpunkt_df = progressdatenbankderivate::event2zeitpunkt_table
 )
@@ -30,6 +31,9 @@ name from the database of the PROGRESS study}
 \item{FRM_RR}{data.table containing the table with the same name from
 the database of the PROGRESS study}
 
+\item{FRM_BEAT}{data.table containing the table with the same name from
+the database of the PROGRESS study}
+
 \item{zp_fabian}{vector of characters. They must be present in
 event2zeitpunkt_table$zp_fabianref.}
 
@@ -42,6 +46,9 @@ in the wide format (one row per patient), containing the data used for
 computing the CURB65 score. out is a data.table with one row
 corresponding to one patient, identified by the
 PATSTUID. The column curb contains the value of CURB65 score.
+Note: The calculation of the respiratory component of the CURB65 score
+differs from the original definition of CURB65. Patients who are ventilated
+are counted as if they their respiratory rate >= 30.
 }
 \description{
 Compute the CURB65 score.
@@ -56,13 +63,15 @@ FRM_BEF <- readxl::read_excel(excel_fn, 'FRM_BEF')
 FRM_B24 <- readxl::read_excel(excel_fn, 'FRM_B24')
 FRM_DIL_LABORWERTE <- readxl::read_excel(excel_fn, 'FRM_DIL_LABORWERTE')
 FRM_RR <- readxl::read_excel(excel_fn, 'FRM_RR', guess_max = 10e5)
+FRM_BEAT <- readxl::read_excel(excel_fn, 'FRM_BEAT', guess_max = 10e5)
 data.table::setDT(DID_PROBAND)
 data.table::setDT(FRM_BEF)
 data.table::setDT(FRM_B24)
 data.table::setDT(FRM_DIL_LABORWERTE)
 data.table::setDT(FRM_RR)
+data.table::setDT(FRM_BEAT)
 erg <- curb65.fct(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE, FRM_RR,
-zp_fabian = "d0")
+FRM_BEAT, zp_fabian = "d0")
 erg
 }
 }
