@@ -10,7 +10,7 @@ curb65.fct(
   FRM_B24,
   FRM_DIL_LABORWERTE,
   FRM_RR,
-  FRM_BEAT,
+  FRM_BEAT = NULL,
   zp_fabian = "d0",
   event2zeitpunkt_df = progressdatenbankderivate::event2zeitpunkt_table
 )
