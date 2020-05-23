@@ -1,4 +1,4 @@
-#' Compute the CURB65 score.
+#' Compute the CRB, CRB65, CURB and CURB65 score.
 #'
 #' @param DID_PROBAND data.table containing the table with the same name from
 #'  the database of the PROGRESS study
@@ -11,20 +11,25 @@
 #' @param FRM_RR data.table containing the table with the same name from
 #'  the database of the PROGRESS study
 #' @param FRM_BEAT data.table containing the table with the same name from
-#'  the database of the PROGRESS study
+#'  the database of the PROGRESS study. If it is NULL then the mechanical
+#'  ventilation is not taken into account while computing the respiratory
+#'  component of CURB65 which is as in the original definition of CURB65.
+#'  Otherwise, if FRM_BEAT is non-NULL ventilated patients
+#'  (those with the variable PATBEATM == 1 in the table FRM_BEAT) get 1 point.
 #' @param zp_fabian vector of characters. They must be present in
 #' event2zeitpunkt_table$zp_fabianref.
 #' @param event2zeitpunkt_df data.table event2zeitpunkt_table (available with
 #' the package).
 #'
-#' @return a named list with components: input and out. input is a data.table
-#' in the wide format (one row per patient), containing the data used for
-#' computing the CURB65 score. out is a data.table with one row
-#' corresponding to one patient, identified by the
-#' PATSTUID. The column curb contains the value of CURB65 score.
-#' Note: The calculation of the respiratory component of the CURB65 score
-#' differs from the original definition of CURB65. Patients who are ventilated
-#' are counted as if they their respiratory rate >= 30.
+#' @return a named list with one component: out. It is a data.table with one
+#' row corresponding to one patient, identified by the
+#' PATSTUID. The column crb, crb65, curb, curb65 contain the values of the
+#' scores. Columns PATSTUID and EVENT identify the patient and time point.
+#' Other columns contain data used for computing the components of the CURB65
+#' scores.
+#' Note: If FRM_BEAT != NULL the calculation of the respiratory component of
+#' the CURB65 score differs from the original definition of CURB65. Patients
+#' who are ventilated are counted as if they their respiratory rate >= 30.
 #' @export
 #'
 #' @examples
@@ -45,8 +50,11 @@
 #' data.table::setDT(FRM_RR)
 #' data.table::setDT(FRM_BEAT)
 #' erg <- curb65.fct(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE, FRM_RR,
-#' FRM_BEAT, zp_fabian = "d0")
+#' FRM_BEAT = NULL, zp_fabian = "d0")
 #' erg
+#' erg_bea <- curb65.fct(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE,
+#' FRM_RR, FRM_BEAT, zp_fabian = "d0")
+#' erg_bea
 #' }
 curb65.fct<- function(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE,
                       FRM_RR, FRM_BEAT = NULL, zp_fabian = "d0",
