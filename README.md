@@ -206,7 +206,6 @@ smart_cop
 ### CRB, CRB65, CURB, CURB65
 
 ``` r
-# NA if all components of the score are NA.
 suppressWarnings(
   curb65 <- curb65.fct(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE, 
                        FRM_RR, FRM_BEAT = NULL, zp_fabian = "d0")$out[,
@@ -222,7 +221,7 @@ curb65
 #>   ---                                     
 #> 2209:   238909     3   0     0    0      0
 #> 2210:   240062     3   1     1    1      1
-#> 2211:   242021     3  NA    NA   NA     NA
+#> 2211:   242021     3   0     0    0      0
 #> 2212:   244008     3   1     1    1      1
 #> 2213:     9435     3   0     0    0      0
 ```
