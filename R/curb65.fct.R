@@ -261,6 +261,14 @@ curb65_default<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age){
                               "afrq.max_curb65", "bp_curb65",
                               "age_curb65")]
 
+  # if all components of the scores are NA then set the scores to 0
+  # uncomment it, if they should be NA instead
+  curb_components[is.na(crb), crb := 0]
+  curb_components[is.na(crb65), crb65 := 0]
+  curb_components[is.na(curb), curb := 0]
+  curb_components[is.na(curb), curb := 0]
+  curb_components[is.na(curb65), curb65 := 0]
+
   # return(cbind(curb.vollst,curb, curb_components, is_na_df))
   # return(cbind(curb.vollst,curb, curb_components))
   return(curb_components)
@@ -464,6 +472,14 @@ curb65_bea<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age, patbea){
                   .SDcols = c("verwirrt_curb65", "bun_curb65",
                               "afrq.max_curb65", "bp_curb65",
                               "age_curb65")]
+
+  # if all components of the scores are NA then set the scores to 0
+  # uncomment it, if they should be NA instead
+  curb_components[is.na(crb), crb := 0]
+  curb_components[is.na(crb65), crb65 := 0]
+  curb_components[is.na(curb), curb := 0]
+  curb_components[is.na(curb), curb := 0]
+  curb_components[is.na(curb65), curb65 := 0]
 
   # return(cbind(curb.vollst,curb, curb_components, is_na_df))
   # return(cbind(curb.vollst,curb, curb_components))
