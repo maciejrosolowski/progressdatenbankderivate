@@ -68,12 +68,17 @@ getData4beat <- function(FRM_BEAT) {
   renaming[, typ := strsplit(old, "_") %>% sapply(.,"[",1)]
   # renaming[,event:=stringr::str_split(old, "_") %>% sapply(.,"[",2)]
   renaming[, event := strsplit(old, "_") %>% sapply(.,"[",2)]
+  # renaming[
+  #   ,newname:=paste0(event2zeitpunkt(event, returnformat = "zp_fabianref"),
+  #                    "_beat_",typ)]
+  # put the time point at the end (not at the beginning)
   renaming[
-    ,newname:=paste0(event2zeitpunkt(event, returnformat = "zp_fabianref"),
-                     "_beat_",typ)]
+    ,newname:=paste0(typ, "_beat_",
+                     event2zeitpunkt(event, returnformat = "zp_fabianref")
+                     )]
   renaming[
     typ =="atall", newname :=
-      paste0("bea.", event2zeitpunkt(event, returnformat = "zp_fabianref"))]
+      paste0("bea_", event2zeitpunkt(event, returnformat = "zp_fabianref"))]
   # 2020-05-13 MRos: zp_fabian as suffix (not prefix) for curb65.fct
   renaming[typ == "patbea", newname := paste(typ, event2zeitpunkt(
     event, returnformat = "zp_fabianref"), sep = "_")]
