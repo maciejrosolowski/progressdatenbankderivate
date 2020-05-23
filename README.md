@@ -203,6 +203,30 @@ smart_cop
 #> 2213:   242021   321        1
 ```
 
+### CRB, CRB65, CURB, CURB65
+
+``` r
+# NA if all components of the score are NA.
+suppressWarnings(
+  curb65 <- curb65.fct(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE, 
+                       FRM_RR, FRM_BEAT = NULL, zp_fabian = "d0")$out[,
+                         .(PATSTUID, EVENT, crb, crb65, curb, curb65)]
+)
+curb65
+#>       PATSTUID EVENT crb crb65 curb curb65
+#>    1:     5635     3   0     0    0      0
+#>    2:     5656     3   0     1    0      1
+#>    3:     5663     3   1     2    1      2
+#>    4:     5674     3   1     2    2      3
+#>    5:     5681     3   0     1    0      1
+#>   ---                                     
+#> 2209:   238909     3   0     0    0      0
+#> 2210:   240062     3   1     1    1      1
+#> 2211:   242021     3  NA    NA   NA     NA
+#> 2212:   244008     3   1     1    1      1
+#> 2213:     9435     3   0     0    0      0
+```
+
 ## How to compute the scores based on values of the input parameters
 
 ### PSI
