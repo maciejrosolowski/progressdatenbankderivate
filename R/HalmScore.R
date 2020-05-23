@@ -122,7 +122,8 @@ HalmScore <- function (FRM_B24,FRM_BEF, FRM_RR, FRM_O2A, FRM_O2P,FRM_BEAT,
 
   cutoff<-(minPoxy<90 | (minApo2 < 60))
   #Beatmung ? -> kein NA
-  beatmet<-DAT$bea.d0
+  # beatmet<-DAT$bea.d0
+  beatmet <- DAT$patbea_d0  # 2020-05-23 MRos
   #zusaetzlicher O2 ?
   extraO2<-DAT$sauerst_d0
   myFilt<-is.na(extraO2)
