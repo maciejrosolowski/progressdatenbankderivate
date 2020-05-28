@@ -79,17 +79,17 @@ curb65.fct_default<- function(DID_PROBAND, FRM_BEF, FRM_B24, FRM_DIL_LABORWERTE,
   # due to non-standard evaluation notes in R CMD check
   verwirrt <- bun <- afrq.max <- sysbp.min <- diasbp.min <- NULL
 
-  # if (!(time %in% c("auf","d0","d1","d2","d3","d4","auf_in_d0","d0_in_auf",
-  #                   "auf+d0"))){
-  #   stop("ERROR: time needs to equal one these values:
-  #         auf, d0, d1, d2, d3, d4,
-  #         auf_in_d0, d0_in_auf, d0+auf")
-  # }
-
-  if (!(zp_fabian %in% event2zeitpunkt_df$zp_fabianref)){
-    stop("ERROR: zp_fabian needs to equal one these values: ",
-         paste(event2zeitpunkt_df$zp_fabianref, collapse = ", "))
+  if (!(zp_fabian %in% c("auf","d0","d1","d2","d3","d4","auf_in_d0","d0_in_auf",
+                    "auf+d0"))){
+    stop("ERROR: zp_fabian needs to equal one these values:
+          auf, d0, d1, d2, d3, d4,
+          auf_in_d0, d0_in_auf, d0+auf")
   }
+
+  # if (!(zp_fabian %in% event2zeitpunkt_df$zp_fabianref)){
+  #   stop("ERROR: zp_fabian needs to equal one these values: ",
+  #        paste(event2zeitpunkt_df$zp_fabianref, collapse = ", "))
+  # }
 
   toadd_agesex <- getData4age.sex(DID_PROBAND)
   toadd_verwirrt <- getData4verwirrt(FRM_BEF)
