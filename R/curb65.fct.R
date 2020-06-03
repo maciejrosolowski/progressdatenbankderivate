@@ -266,7 +266,6 @@ curb65_default<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age){
   curb_components[is.na(crb), crb := 0]
   curb_components[is.na(crb65), crb65 := 0]
   curb_components[is.na(curb), curb := 0]
-  curb_components[is.na(curb), curb := 0]
   curb_components[is.na(curb65), curb65 := 0]
 
   # return(cbind(curb.vollst,curb, curb_components, is_na_df))
@@ -477,7 +476,6 @@ curb65_bea<-function(verwirrt,bun,afrq.max,sysbp.min,diasbp.min,age, patbea){
   # uncomment it, if they should be NA instead
   curb_components[is.na(crb), crb := 0]
   curb_components[is.na(crb65), crb65 := 0]
-  curb_components[is.na(curb), curb := 0]
   curb_components[is.na(curb), curb := 0]
   curb_components[is.na(curb65), curb65 := 0]
 
