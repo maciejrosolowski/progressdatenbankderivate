@@ -150,7 +150,7 @@ HalmScore <- function (FRM_B24,FRM_BEF, FRM_RR, FRM_O2A, FRM_O2P,FRM_BEAT,
   halm<-apply(dummy,1,function(x) sum(x,na.rm=T))
 
 
-  res = data.table(halm)
+  res = data.table(halm, dummy)
   res$PATSTUID  = DAT$patstuid
   res$EVENT = zeitpunkt2event(zp_fabian)
   # 2020-03-04 MRos: replace call to moveColFront for no dependency on toolboxH

@@ -140,7 +140,9 @@ qsofa[, .(PATSTUID, EVENT, qSOFA)]
 ``` r
 suppressWarnings(
   halm <- HalmScore(FRM_B24, FRM_BEF, FRM_RR, FRM_O2A, FRM_O2P, FRM_BEAT,
-                    DID_CLIN, zp_fabian = "auf_in_d-1_in_d0")$out
+                    DID_CLIN, zp_fabian = "auf_in_d-1_in_d0")$out[
+                      , .(PATSTUID, EVENT, halm)
+                    ]
 )
 halm
 #>       PATSTUID EVENT halm
