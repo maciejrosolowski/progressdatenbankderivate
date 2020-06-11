@@ -165,7 +165,7 @@ halm
 suppressWarnings(
   scap <- SCAP(FRM_B24, FRM_O2A, FRM_RR, FRM_BEF, FRM_DIL_LABORWERTE, DID_CLIN,
                DID_PROBAND, FRM_VIS, DID_OXYGENIND_SINGLE,
-               zp_fabian = "auf_in_d-1_in_d0")$out
+               zp_fabian = "auf_in_d-1_in_d0")$out[, .(PATSTUID, EVENT, SCAP)]
 )
 scap
 #>       PATSTUID EVENT SCAP

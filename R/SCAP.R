@@ -152,7 +152,7 @@ SCAP <- function(FRM_B24, FRM_O2A,FRM_RR, FRM_BEF,FRM_DIL_LABORWERTE,
   dummy<-cbind(apH.p,SBP.p,AF.p,BHSS.p,MS.p,O2.p,Age.p,MI.p)
   SCAP<-apply(dummy,1,function(x) sum(x,na.rm=T))
 
-  res = data.table(SCAP)
+  res = data.table(SCAP, dummy)
   res$PATSTUID  = DAT$patstuid
   res$EVENT = zeitpunkt2event(zp_fabian)
   # 2020-03-05 MRos: replace call to moveColFront for no dependency on toolboxH
