@@ -188,7 +188,8 @@ scap
 suppressWarnings(
   smart_cop <- smartCOP(FRM_RR, FRM_BEF, FRM_VIS, FRM_DIL_LABORWERTE, FRM_B24,
                         DID_PROBAND, DID_CLIN, DID_OXYGENIND_SINGLE,
-                        FRM_O2A, zp_fabian = "auf_in_d-1_in_d0")$out
+                        FRM_O2A, zp_fabian = "auf_in_d-1_in_d0")$out[
+                          , .(PATSTUID, EVENT, smartCOP)]
 )
 smart_cop
 #>       PATSTUID EVENT smartCOP

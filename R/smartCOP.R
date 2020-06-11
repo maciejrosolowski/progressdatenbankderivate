@@ -170,7 +170,7 @@ smartCOP <- function(FRM_RR,FRM_BEF, FRM_VIS,FRM_DIL_LABORWERTE,FRM_B24,
   #hist(smart.COP)
 
   # return(smart.COP)
-  res = data.table(smartCOP = smart.COP)
+  res = data.table(smartCOP = smart.COP, dummy)
   res$PATSTUID  = DAT$patstuid
   res$EVENT = zeitpunkt2event(zp_fabian)
   # 2020-03-05 MRos: replace call to moveColFront for no dependency on toolboxH
