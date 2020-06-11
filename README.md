@@ -120,7 +120,7 @@ suppressWarnings(
   qsofa <- quickSOFA(FRM_RR, FRM_B24, FRM_BEF, DID_CLIN,
                      zp_fabian = "auf_in_d0")$out
 )
-qsofa
+qsofa[, .(PATSTUID, EVENT, qSOFA)]
 #>       PATSTUID EVENT qSOFA
 #>    1:     1564    31     1
 #>    2:     1591    31     0
