@@ -38,7 +38,7 @@
 #' }
 quickSOFA <- function (FRM_RR,FRM_B24,FRM_BEF,DID_CLIN, zp_fabian="auf_in_d0") {
   # due to non-standard evaluation notes in R CMD check
-  CLIN_PARAM <- EVENT <- PATSTUID <- WERT <- patstuid <- NULL
+  CLIN_PARAM <- EVENT <- PATSTUID <- WERT <- patstuid <- qSOFA <- NULL
   #  qSOFA (quick SOFA), urspruenglich von Katrin eingebaut am 09. Dezember 2016
 
   if ( !(zp_fabian %in% c("auf_in_d0")) ) {
@@ -89,8 +89,8 @@ quickSOFA <- function (FRM_RR,FRM_B24,FRM_BEF,DID_CLIN, zp_fabian="auf_in_d0") {
   #hier noch auf verwirrt_auf und verwirrt_d0 pruefen, falls verwirrt,
   # dann Punkt
 
-  dummy<-cbind(bloodpressurePoint,highRespRatePoint,gcsPoint)
-  res<-apply(dummy,1,function(x) sum(x,na.rm=T))
+  # dummy<-cbind(bloodpressurePoint,highRespRatePoint,gcsPoint)
+  # res<-apply(dummy,1,function(x) sum(x,na.rm=T))
 
   #completeness of score
   # verwirrt<-DAT$verwirrt_d0
@@ -109,9 +109,19 @@ quickSOFA <- function (FRM_RR,FRM_B24,FRM_BEF,DID_CLIN, zp_fabian="auf_in_d0") {
   # sum(com>=1)
   # sum(com>=1)/1532
 
-  res = data.table(qSOFA = res, dummy)
-  res$PATSTUID  = DAT$patstuid
-  res$EVENT = zeitpunkt2event(zp_fabian)
+  # res = data.table(qSOFA = res, dummy)
+  # res$PATSTUID  = DAT$patstuid
+  # res$EVENT = zeitpunkt2event(zp_fabian)
+
+  res <- data.table(PATSTUID = DAT$patstuid,
+                    EVENT = zeitpunkt2event(zp_fabian),
+                    bloodpressurePoint, highRespRatePoint, gcsPoint)
+  # 50% rule. > 50% of the subscores have to be non-NA for the score
+  # to be non-NA
+  res[, qSOFA := ifelse(rowSums(!is.na(.SD)) >= 2,
+                        rowSums(.SD, na.rm = TRUE), NA_integer_),
+      .SDcols = c("bloodpressurePoint", "highRespRatePoint", "gcsPoint")]
+
   # 2020-03-03 MRos: replace call to moveColFront for no dependency on toolboxH
   # res = moveColFront(res,c( "PATSTUID", 'event'))
   res <- data.table::setcolorder(res, neworder = c( "PATSTUID", "EVENT"))
