@@ -28,7 +28,8 @@ a named list with components: input and out. input is a data.table
 in the wide format (one row per patient), containing the data used for
 computing the quickSOFA score. out is a data.table with one row
 corresponding to one patient, identified by the
-PATSTUID. The column res contains the value of quickSOFA.
+PATSTUID. The column qSOFA contains the value of quickSOFA. The score is
+non-NA, if more than 50% of its 3 subscores, i.e., at least 2 are non-NA.
 }
 \description{
 Compute the quickSOFA score.
