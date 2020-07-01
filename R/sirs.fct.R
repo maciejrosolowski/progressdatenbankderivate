@@ -23,7 +23,11 @@
 #'
 #' @return a named list with components: input, input2 and out. out is
 #' a data.table with one row corresponding to a combination of PATSTUID
-#' (patient) and "EVENT" (time point).
+#' (patient) and "EVENT" (time point). infec.septic.servsept contains
+#' the number of the met SIRS criteria (infected (1), sepsis (2),
+#' severe sepsis(3)); septischer.schock indicates if criteria for septic shock
+#' are met. If 50% or less of the 16 input parameters are NA then the score
+#' is set to NA.
 #' @export
 #'
 #' @examples
@@ -63,7 +67,8 @@ sirs.fct <- function(DID_PROBAND,FRM_BAS, FRM_BEF, FRM_B24,FRM_DIL_LABORWERTE,
     hfrq.max <- kate <- leuko_max <- leuko_min <- map <- oxi.ind <- patstuid <-
     age <- pco2 <- smkern.neutro <- stkern.neutro <- sysbp.min <- temp.max <-
     temp.min <- thrombo_min <- verwirrt <- zp_fabian1DayBefore <-
-    zp_fabianref <- NULL
+    zp_fabianref <- infec.septic.servsept <- septischer.schock <-
+    vollstaendig.aus.16 <- NULL
 
   toadd_gewicht = DID_PROBAND[,.(patstuid =PATSTUID, gewicht=WEIGHT)]
   toadd_chr.lunge = getData4chr.lunge(FRM_BAS)
@@ -301,6 +306,9 @@ sirs.fct <- function(DID_PROBAND,FRM_BAS, FRM_BEF, FRM_B24,FRM_DIL_LABORWERTE,
   # 2020-03-03 MRos: replace call to moveColFront for no dependency on toolboxH
   # out = moveColFront(out,c( "PATSTUID", 'event'))
   out <- data.table::setcolorder(out, neworder = c("PATSTUID", "EVENT"))
+  # 2020-07-01 MRos: apply the 50% rule. If <= 50% subscores NA then score NA
+  out[vollstaendig.aus.16 <= 8, infec.septic.servsept := NA]
+  out[vollstaendig.aus.16 <= 8, septischer.schock := NA]
   erg = c()
   erg$input  = DAT
   erg$input2 = c()

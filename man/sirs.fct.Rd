@@ -51,7 +51,11 @@ the package).}
 \value{
 a named list with components: input, input2 and out. out is
 a data.table with one row corresponding to a combination of PATSTUID
-(patient) and "EVENT" (time point).
+(patient) and "EVENT" (time point). infec.septic.servsept contains
+the number of the met SIRS criteria (infected (1), sepsis (2),
+severe sepsis(3)); septischer.schock indicates if criteria for septic shock
+are met. If 50% or less of the 16 input parameters are NA then the score
+is set to NA.
 }
 \description{
 Compute the SIRS score.
