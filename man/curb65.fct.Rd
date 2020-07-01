@@ -51,6 +51,7 @@ PATSTUID. The column crb, crb65, curb, curb65 contain the values of the
 scores. Columns PATSTUID and EVENT identify the patient and time point.
 Other columns contain data used for computing the components of the CURB65
 scores.
+If more than 50% of the subscores of each score are avaiable then the
 Note: If FRM_BEAT != NULL the calculation of the respiratory component of
 the CURB65 score differs from the original definition of CURB65. Patients
 who are ventilated are counted as if they their respiratory rate >= 30.
