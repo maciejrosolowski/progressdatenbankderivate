@@ -46,7 +46,8 @@ a named list with components: input and out. input is a data.table
 in the wide format (one row per patient), containing the data used for
 computing the Halm score. out is a data.table with one row
 corresponding to one patient, identified by the
-PATSTUID. The column halm contains the value of Halm.
+PATSTUID. The column halm contains the value of Halm. The score is non-NA,
+if more than 50% of its 6 subscores, i.e., at least 4 subscores are non-NA.
 }
 \description{
 Compute the Halm score.

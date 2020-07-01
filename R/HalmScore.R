@@ -22,7 +22,8 @@
 #' in the wide format (one row per patient), containing the data used for
 #' computing the Halm score. out is a data.table with one row
 #' corresponding to one patient, identified by the
-#' PATSTUID. The column halm contains the value of Halm.
+#' PATSTUID. The column halm contains the value of Halm. The score is non-NA,
+#' if more than 50% of its 6 subscores, i.e., at least 4 subscores are non-NA.
 #' @export
 #'
 #' @examples
@@ -52,7 +53,7 @@ HalmScore <- function (FRM_B24,FRM_BEF, FRM_RR, FRM_O2A, FRM_O2P,FRM_BEAT,
                        DID_CLIN,zp_fabian="auf_in_d-1_in_d0") {
   # due to non-standard evaluation notes in R CMD check
   apo2.min_auf <- `apo2.min_d-1` <- apo2.min_d0 <- o2p.min_auf <-
-    `o2p.min_d-1` <- o2p.min_d0 <- patstuid <- NULL
+    `o2p.min_d-1` <- o2p.min_d0 <- patstuid <- halm <- NULL
   #Halm-Score, urspruenglich von Katrin eingebaut am 14. Maerz 2017
   if ( !(zp_fabian %in% c("auf_in_d-1_in_d0")) ) {
     stop("ERROR: variable zp_fabian must be set to auf_in_d-1_in_d0
@@ -146,13 +147,22 @@ HalmScore <- function (FRM_B24,FRM_BEF, FRM_RR, FRM_O2A, FRM_O2P,FRM_BEAT,
   MS.p<-as.numeric(verwirrt| (DAT$gcs_d0<15))
 
   #Gesamtscore berechnen
-  dummy<-cbind(HRF.p,SBP.p,AF.p,O2.p,KT.p,MS.p)
-  halm<-apply(dummy,1,function(x) sum(x,na.rm=T))
+  # dummy<-cbind(HRF.p,SBP.p,AF.p,O2.p,KT.p,MS.p)
+  # halm<-apply(dummy,1,function(x) sum(x,na.rm=T))
 
+  # res = data.table(halm, dummy)
+  # res$PATSTUID  = DAT$patstuid
+  # res$EVENT = zeitpunkt2event(zp_fabian)
 
-  res = data.table(halm, dummy)
-  res$PATSTUID  = DAT$patstuid
-  res$EVENT = zeitpunkt2event(zp_fabian)
+  res <- data.table(PATSTUID = DAT$patstuid,
+                    EVENT = zeitpunkt2event(zp_fabian),
+                    HRF.p, SBP.p, AF.p, O2.p, KT.p, MS.p)
+  # 50% rule. > 50% of the subscores have to be non-NA for the score
+  # to be non-NA. 2020-07-01.
+  res[, halm := ifelse(rowSums(!is.na(.SD)) >= 4,
+                        rowSums(.SD, na.rm = TRUE), NA_integer_),
+      .SDcols = c("HRF.p", "SBP.p", "AF.p", "O2.p", "KT.p", "MS.p")]
+
   # 2020-03-04 MRos: replace call to moveColFront for no dependency on toolboxH
   # res = moveColFront(res,c( "PATSTUID", 'event'))
   res <- data.table::setcolorder(res, neworder = c( "PATSTUID", "EVENT"))
