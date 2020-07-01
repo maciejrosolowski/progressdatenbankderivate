@@ -68,7 +68,8 @@ psi.fct <- function(DID_PROBAND,FRM_BAS, FRM_BEF, FRM_B24,FRM_RR,FRM_O2A,
   EVENTKombination <- afrq.max <- gender <- gluk <- haemkrt <- herz <-
     hfrq.max <- liver <- nurse.home <- patstuid <- age <- apo2.min <-
     art.ph.min <- bun <- cerebro <- pleu_erg <- renal <- snat <- sysbp.min <-
-    temp.max <- temp.min <- tumor <- verwirrt <- zp_fabianref <- NULL
+    temp.max <- temp.min <- tumor <- verwirrt <- zp_fabianref <- psi <-
+    vollstaendig.von.20 <- NULL
 
   if (!(zp_fabian %in% event2zeitpunkt_df$zp_fabianref)){
     stop("ERROR: zp_fabian needs to equal one these values: ",
@@ -243,6 +244,8 @@ psi.fct <- function(DID_PROBAND,FRM_BAS, FRM_BEF, FRM_B24,FRM_RR,FRM_O2A,
   # 2020-02-25 MRos: replace call to moveColFront for no dependency on toolboxH
   # out = moveColFront(out,c( "PATSTUID", 'event'))
   out <- data.table::setcolorder(out, neworder = c( "PATSTUID", "EVENT"))
+  # 2020-07-01 MRos: apply the 50% rule. If <= 50% subscores NA then score NA
+  out[vollstaendig.von.20 <= 10, psi := NA]
   erg = c()
   erg$input  = DAT
   erg$input2 = list(DAT$patstuid, age,verwirrt,hfrq.max,afrq.max,sysbp.min,
