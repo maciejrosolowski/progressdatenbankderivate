@@ -55,6 +55,8 @@ in the wide format (one row per patient), containing the data used for
 computing the smartCOP score. out is a data.table with one row
 corresponding to one patient, identified by the
 PATSTUID. The column smartCOP contains the value of smartCOP score.
+The score is avaiable, if more than 50% of its subscores, i.e., 5 or more
+are available.
 }
 \description{
 Compute the smartCOP score.

@@ -27,6 +27,8 @@
 #' computing the smartCOP score. out is a data.table with one row
 #' corresponding to one patient, identified by the
 #' PATSTUID. The column smartCOP contains the value of smartCOP score.
+#' The score is avaiable, if more than 50% of its subscores, i.e., 5 or more
+#' are available.
 #' @export
 #'
 #' @examples
@@ -61,7 +63,7 @@ smartCOP <- function(FRM_RR,FRM_BEF, FRM_VIS,FRM_DIL_LABORWERTE,FRM_B24,
                       DID_PROBAND,DID_CLIN,DID_OXYGENIND_SINGLE,FRM_O2A,
                       zp_fabian="auf_in_d-1_in_d0") {
   # due to non-standard evaluation notes in R CMD check
-  patstuid <- NULL
+  patstuid <- smartCOP <- NULL
   # SMART-COP, urspruenglich von Katrin  #eingebaut am 15. Maerz 2017
   if ( !(zp_fabian %in% c("auf_in_d-1_in_d0")) ) {
     stop("ERROR: variable zp_fabian must be set to auf_in_d-1_in_d0
@@ -163,16 +165,27 @@ smartCOP <- function(FRM_RR,FRM_BEF, FRM_VIS,FRM_DIL_LABORWERTE,FRM_B24,
   apH.p<-as.numeric(aph<7.35) * 2
 
   #Gesamtscore berechnen
-  dummy<-cbind(SBP.p,MI.p,Alb.p,AF.p,HRF.p,MS.p,O2.p,apH.p)
-  smart.COP<-apply(dummy,1,function(x) sum(x,na.rm=T))
+  # dummy<-cbind(SBP.p,MI.p,Alb.p,AF.p,HRF.p,MS.p,O2.p,apH.p)
+  # smart.COP<-apply(dummy,1,function(x) sum(x,na.rm=T))
 
   #table(smart.COP,useNA="ifany")
   #hist(smart.COP)
 
   # return(smart.COP)
-  res = data.table(smartCOP = smart.COP, dummy)
-  res$PATSTUID  = DAT$patstuid
-  res$EVENT = zeitpunkt2event(zp_fabian)
+  # res = data.table(smartCOP = smart.COP, dummy)
+  # res$PATSTUID  = DAT$patstuid
+  # res$EVENT = zeitpunkt2event(zp_fabian)
+
+  res <- data.table(PATSTUID = DAT$patstuid,
+                    EVENT = zeitpunkt2event(zp_fabian),
+                    SBP.p, MI.p, Alb.p, AF.p, HRF.p, MS.p, O2.p, apH.p)
+  # 50% rule. > 50% of the subscores have to be non-NA for the score
+  # to be non-NA. 2020-07-01.
+  res[, smartCOP := ifelse(rowSums(!is.na(.SD)) >= 5,
+                       rowSums(.SD, na.rm = TRUE), NA_integer_),
+      .SDcols = c("SBP.p", "MI.p", "Alb.p", "AF.p", "HRF.p", "MS.p", "O2.p",
+                  "apH.p")]
+
   # 2020-03-05 MRos: replace call to moveColFront for no dependency on toolboxH
   # res = moveColFront(res,c( "PATSTUID", 'event'))
   res <- data.table::setcolorder(res, neworder = c( "PATSTUID", "EVENT"))
