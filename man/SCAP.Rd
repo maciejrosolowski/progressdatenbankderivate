@@ -54,7 +54,8 @@ a named list with components: input and out. input is a data.table
 in the wide format (one row per patient), containing the data used for
 computing the SCAP score. out is a data.table with one row
 corresponding to one patient, identified by the
-PATSTUID. The column SCAP contains the value of SCAP score.
+PATSTUID. The column SCAP contains the value of SCAP score. The score is
+available, if more than 50% of its subscores, i.e., 5 or more are available.
 }
 \description{
 Compute the SCAP score.

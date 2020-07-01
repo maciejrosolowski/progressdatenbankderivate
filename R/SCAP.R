@@ -26,7 +26,8 @@
 #' in the wide format (one row per patient), containing the data used for
 #' computing the SCAP score. out is a data.table with one row
 #' corresponding to one patient, identified by the
-#' PATSTUID. The column SCAP contains the value of SCAP score.
+#' PATSTUID. The column SCAP contains the value of SCAP score. The score is
+#' available, if more than 50% of its subscores, i.e., 5 or more are available.
 #' @export
 #'
 #' @examples
@@ -61,7 +62,7 @@ SCAP <- function(FRM_B24, FRM_O2A,FRM_RR, FRM_BEF,FRM_DIL_LABORWERTE,
                   DID_CLIN,DID_PROBAND,FRM_VIS, DID_OXYGENIND_SINGLE,
                  zp_fabian="auf_in_d-1_in_d0") {
   # due to non-standard evaluation notes in R CMD check
-  patstuid <- NULL
+  patstuid <- SCAP <- NULL
   #SCAP, urspruenglich von Katrin  eingebaut am 15. Maerz 2017
   if ( !(zp_fabian %in% c("auf_in_d-1_in_d0")) ) {
     stop("ERROR: variable zp_fabian must be set to auf_in_d-1_in_d0 It's not
@@ -149,12 +150,23 @@ SCAP <- function(FRM_B24, FRM_O2A,FRM_RR, FRM_BEF,FRM_DIL_LABORWERTE,
   MI.p<-as.numeric(mi)*5
 
   #Gesamtscore berechnen
-  dummy<-cbind(apH.p,SBP.p,AF.p,BHSS.p,MS.p,O2.p,Age.p,MI.p)
-  SCAP<-apply(dummy,1,function(x) sum(x,na.rm=T))
+  # dummy<-cbind(apH.p,SBP.p,AF.p,BHSS.p,MS.p,O2.p,Age.p,MI.p)
+  # SCAP<-apply(dummy,1,function(x) sum(x,na.rm=T))
 
-  res = data.table(SCAP, dummy)
-  res$PATSTUID  = DAT$patstuid
-  res$EVENT = zeitpunkt2event(zp_fabian)
+  # res = data.table(SCAP, dummy)
+  # res$PATSTUID  = DAT$patstuid
+  # res$EVENT = zeitpunkt2event(zp_fabian)
+
+  res <- data.table(PATSTUID = DAT$patstuid,
+                    EVENT = zeitpunkt2event(zp_fabian),
+                    apH.p, SBP.p, AF.p, BHSS.p, MS.p, O2.p, Age.p, MI.p)
+  # 50% rule. > 50% of the subscores have to be non-NA for the score
+  # to be non-NA. 2020-07-01.
+  res[, SCAP := ifelse(rowSums(!is.na(.SD)) >= 5,
+                       rowSums(.SD, na.rm = TRUE), NA_integer_),
+      .SDcols = c("apH.p", "SBP.p", "AF.p", "BHSS.p", "MS.p", "O2.p",
+                  "Age.p", "MI.p")]
+
   # 2020-03-05 MRos: replace call to moveColFront for no dependency on toolboxH
   # res = moveColFront(res,c( "PATSTUID", 'event'))
   res <- data.table::setcolorder(res, neworder = c( "PATSTUID", "EVENT"))
