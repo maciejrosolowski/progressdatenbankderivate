@@ -23,7 +23,7 @@ devtools::install_github("maciejrosolowski/progressdatenbankderivate")
 
 ## Example
 
-Read the data exported from the database of the PROGRESS project.
+Read the data exported from the database of the PROGRESS project
 
 ``` r
 library(readxl)
