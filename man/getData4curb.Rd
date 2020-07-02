@@ -11,7 +11,9 @@ getData4curb(DID_CURB65)
 of the PROGRESS study}
 }
 \value{
-data.table of DID_CURB65 with -1 replaced by NA and added CRB65 column
+data.table of DID_CURB65 with -1 replaced by NA and added CRB65 column.
+50% rule applied to to subscores. Each score (CRB, CRB65, CURB, CURB65) is
+available, if more then 50% of its subscores are available.
 }
 \description{
 get the CURB65 score from the table DID_CURB65

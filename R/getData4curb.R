@@ -3,7 +3,9 @@
 #' @param DID_CURB65 data.table containing the table DID_CURB65 from the database
 #' of the PROGRESS study
 #'
-#' @return data.table of DID_CURB65 with -1 replaced by NA and added CRB65 column
+#' @return data.table of DID_CURB65 with -1 replaced by NA and added CRB65 column.
+#' 50% rule applied to to subscores. Each score (CRB, CRB65, CURB, CURB65) is
+#' available, if more then 50% of its subscores are available.
 #' @export
 #'
 #' @examples
@@ -19,7 +21,7 @@
 getData4curb = function(DID_CURB65) {
   curb = copy(DID_CURB65)
   # due to non-standard evaluation notes in R CMD check
-  PATSTUID <- EVENT <- event <- AGE <- CRB <- CRB65 <- CURB65 <- NULL
+  PATSTUID <- EVENT <- event <- AGE <- CRB <- CRB65 <- CURB <- CURB65 <- NULL
   # stopifnot(nrow(curb[allDuplicatedEntries(paste(PATSTUID, EVENT))])==0)
   stopifnot(anyDuplicated(curb, by = c("PATSTUID", "EVENT")) == 0)
 
@@ -31,8 +33,21 @@ getData4curb = function(DID_CURB65) {
     set(curb, which(curb[[j]] == -1), j, value = NA)
   }
 
+  # 50% rule applied to to subscores. Each score is available, if more
+  # than 50% of its subscores are available.
+  curb[, CRB := ifelse(rowSums(!is.na(.SD)) >= 2, CRB, NA_integer_),
+       .SDcols = c("VERWIRRT", "ATEM_FREQUENZ", "BLUTDRUCK_ABFALL")]
+  curb[, CRB65 := ifelse(rowSums(!is.na(.SD)) >= 3,
+                         rowSums(.SD, na.rm = TRUE), NA_integer_),
+       .SDcols = c("VERWIRRT", "ATEM_FREQUENZ", "BLUTDRUCK_ABFALL", "AGE")]
+  curb[, CURB := ifelse(rowSums(!is.na(.SD)) >= 3, CURB, NA_integer_),
+       .SDcols = c("VERWIRRT", "URAEMIE", "ATEM_FREQUENZ", "BLUTDRUCK_ABFALL")]
+  curb[, CURB65 := ifelse(rowSums(!is.na(.SD)) >= 3, CURB65, NA_integer_),
+       .SDcols = c("VERWIRRT", "URAEMIE", "ATEM_FREQUENZ", "BLUTDRUCK_ABFALL",
+                   "AGE")]
+
   # showNA(curb)
-  curb[,CRB65 := sum(CRB, AGE, na.rm = T), .(PATSTUID, EVENT)]
+  # curb[,CRB65 := sum(CRB, AGE, na.rm = T), .(PATSTUID, EVENT)]
   # curb[is.na(CRB)]
   curb$PATID_EXT = NULL
   # erg <- list()
