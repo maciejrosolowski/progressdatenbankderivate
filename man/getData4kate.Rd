@@ -12,7 +12,8 @@ of the PROGRESS study}
 }
 \value{
 data.table. Each row corresponds one patient, identified by
-the column "patstuid". Columns "kat.atall", "kat.d0", "kat.ab.d1" are
+the column "patstuid". Columns "kate_<name of the time point>" contain the data
+on KATECHO in the wide format. Columns "kat.atall", "kat.d0", "kat.ab.d1" are
 logical and indicate, if KATECHO == 1 at any time, at d0 and after d0.
 }
 \description{

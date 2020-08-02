@@ -41,7 +41,7 @@
 #' FRM_B24 <- readxl::read_excel(excel_fn, 'FRM_B24')
 #' FRM_DIL_LABORWERTE <- readxl::read_excel(excel_fn, "FRM_DIL_LABORWERTE")
 #' DID_CLIN <- readxl::read_excel(excel_fn, 'DID_CLIN')
-#' FRM_RR <- readxl::read_excel(excel_fn, 'FRM_RR')
+#' FRM_RR <- readxl::read_excel(excel_fn, 'FRM_RR', guess_max = 10e5)
 #' FRM_KAT <- readxl::read_excel(excel_fn, 'FRM_KAT')
 #' data.table::setDT(DID_PROBAND)
 #' data.table::setDT(FRM_BAS)
@@ -144,6 +144,7 @@ sirs.fct <- function(DID_PROBAND,FRM_BAS, FRM_BEF, FRM_B24,FRM_DIL_LABORWERTE,
       if (col_in_DAT %in% colnames(DAT)){
         assign(variables[i], DAT[,col_in_DAT] )
       } else {
+        message("Variable:", variables[i], " not available, replacing with NAs.")
         assign(variables[i], rep(NA,N) )
       }
     }
