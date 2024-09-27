@@ -496,7 +496,7 @@ sirs.III <- function(verwirrt, thrombo_min, thrombo.daybefore, oxi.ind,
     if( (thrombo_min[i]<= 100) | (thrombo.change[i]>0.3) ){
       count <- count +1
     }
-    if( (oxi.ind[i]<=33) & (chr.lunge[i] = 0) ){
+    if( (oxi.ind[i]<=33) & (chr.lunge[i] == 0) ){
       count <- count +1
     }
     if( rel.diur[i] <= 0.5 ){
