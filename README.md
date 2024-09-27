@@ -4,7 +4,6 @@
 # progressdatenbankderivate
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 The goal of progressdatenbankderivate is to extract data from an excel
@@ -23,13 +22,13 @@ devtools::install_github("maciejrosolowski/progressdatenbankderivate")
 
 ## Example
 
-Read the data exported from the database of the PROGRESS project
+Read the data exported from the database of the PROGRESS project.
 
 ``` r
 library(readxl)
 library(data.table)
 library(progressdatenbankderivate)
-excel_fn <- paste0("/net/ifs1/san_projekte/projekte/", 
+excel_fn <- paste0("/net/ifs2/san_projekte/projekte/", 
                    "PROGRESS/Datenmanagement/Data_freezes/", 
                    "20190320/PROGRESS-freeze_201903_01.xlsx")
 DID_PROBAND <- readxl::read_excel(excel_fn, 'DID_PROBAND')
@@ -63,8 +62,7 @@ data.table::setDT(DID_OXYGENIND_SINGLE)
 ### PSI
 
 This is an example which shows how to compute the Pneumonia Severity
-Index
-(PSI):
+Index (PSI):
 
 ``` r
 # suppress warnings about no non-missing values while computing min or max
