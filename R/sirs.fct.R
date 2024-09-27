@@ -427,9 +427,9 @@ sirs.II   <-function(temp.min,temp.max,hfrq.max,afrq.max,pco2,leuko_min,
   pco2[is.na(pco2)]                   <-  5
   leuko_min[is.na(leuko_min)]         <-  10000
   leuko_max[is.na(leuko_max)]         <-  10000
-  stkern.neutro[is.na(stkern.neutro) | is.na(smkern.neutro)] <- 1
+  stkern.neutro[is.na(stkern.neutro) | is.na(smkern.neutro)] <- 1000
   # ergibt zusammen einen unkrit. anteil von 5 %
-  smkern.neutro[is.na(stkern.neutro) | is.na(smkern.neutro)] <- 19
+  smkern.neutro[is.na(stkern.neutro) | is.na(smkern.neutro)] <- 19000
   # (stabkernige an allen neutrophilen)
 
   sum.krit<-c()
