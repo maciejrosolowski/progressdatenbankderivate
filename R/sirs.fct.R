@@ -425,8 +425,8 @@ sirs.II   <-function(temp.min,temp.max,hfrq.max,afrq.max,pco2,leuko_min,
   hfrq.max[is.na(hfrq.max)]           <-  80
   afrq.max[is.na(afrq.max)]           <-  15
   pco2[is.na(pco2)]                   <-  5
-  leuko_min[is.na(leuko_min)]         <-  10
-  leuko_max[is.na(leuko_max)]         <-  10
+  leuko_min[is.na(leuko_min)]         <-  10000
+  leuko_max[is.na(leuko_max)]         <-  10000
   stkern.neutro[is.na(stkern.neutro) | is.na(smkern.neutro)] <- 1
   # ergibt zusammen einen unkrit. anteil von 5 %
   smkern.neutro[is.na(stkern.neutro) | is.na(smkern.neutro)] <- 19
@@ -444,7 +444,7 @@ sirs.II   <-function(temp.min,temp.max,hfrq.max,afrq.max,pco2,leuko_min,
     if ((afrq.max[i] >= 20) | (pco2[i] <= 4.3)){
       count<- count +1
     }
-    if ((leuko_max[i] >= 12) | (leuko_min[i] <= 4) |
+    if ((leuko_max[i] >= 12000) | (leuko_min[i] <= 4000) |
         ( (stkern.neutro[i]/(stkern.neutro[i]+smkern.neutro[i])) >= 0.1) ){
       count<- count +1
     }
