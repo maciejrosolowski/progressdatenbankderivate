@@ -4,7 +4,9 @@
 \name{event2zeitpunkt_table}
 \alias{event2zeitpunkt_table}
 \title{A map between different ways to label the time points in the PROGRESS study}
-\format{A data.table with 19 rows and 6 variables}
+\format{
+A data.table with 19 rows and 6 variables
+}
 \usage{
 event2zeitpunkt_table
 }

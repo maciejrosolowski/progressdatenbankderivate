@@ -2,6 +2,7 @@
 % Please edit documentation in R/progressdatenbankderivate.R
 \docType{package}
 \name{progressdatenbankderivate}
+\alias{progressdatenbankderivate-package}
 \alias{progressdatenbankderivate}
 \title{progressdatenbankderivate: A package for extracting and processing data
  from the database of the PROGESS Study}
@@ -14,3 +15,14 @@ foo, bar and baz.
 The foo functions ...
 }
 
+\author{
+\strong{Maintainer}: Maciej Rosolowski \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+
+Authors:
+\itemize{
+  \item Holger Kirsten \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+  \item Fabian Schwarzenberger \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+  \item Katrin Horn \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+}
+
+}
