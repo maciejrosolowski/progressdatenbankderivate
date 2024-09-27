@@ -7,7 +7,7 @@
 #' @section Foo functions:
 #' The foo functions ...
 #'
-#' @docType package
+#' @docType _PACKAGE
 #' @name progressdatenbankderivate
 #' @import data.table
 NULL
