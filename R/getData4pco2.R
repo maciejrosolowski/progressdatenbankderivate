@@ -30,7 +30,9 @@ getData4pco2 <- function(FRM_B24) {
                       event = EVENT, PCO2EINH,value=as.numeric(PCO2MIN))] %>% unique
   stopifnot(all(pco2$PCO2EINH %in% c(-1,4,5)))
   # 2020-02-28 MRos: conversion from mmHg to kPa
-  pco2[PCO2EINH==5 , value := value * 0.133322400007716]
+  # pco2[PCO2EINH==5 , value := value * 0.133322400007716]
+  # 2024-09-28 MRos: source: https://www.convertunits.com/from/mm%20Hg/to/kPa
+  pco2[PCO2EINH==5 , value := value * 0.133322387415]
   # pco2[allDuplicatedEntries(paste(patstuid, event))]
   pco2.max2 = pco2[event ==3, .(value = max(value, na.rm = T)), .(patstuid,event)]
   pco2.max2[is.infinite(value), value := NA]

@@ -441,7 +441,8 @@ sirs.II   <-function(temp.min,temp.max,hfrq.max,afrq.max,pco2,leuko_min,
     if (hfrq.max[i] >= 90){
       count<- count +1
     }
-    if ((afrq.max[i] >= 20) | (pco2[i] <= 4.3)){
+    # 2024-09-28 MRos: source: https://www.convertunits.com/from/mm%20Hg/to/kPa
+    if ((afrq.max[i] >= 20) | (pco2[i] <= 4.399638784695)){
       count<- count +1
     }
     if ((leuko_max[i] >= 12000) | (leuko_min[i] <= 4000) |
