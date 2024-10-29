@@ -481,7 +481,7 @@ sirs.III <- function(verwirrt, thrombo_min, thrombo.daybefore, oxi.ind,
   thrombo.change                          <-
     (thrombo.daybefore-thrombo_min)/thrombo.daybefore
   thrombo.change[is.na(thrombo.change)]   <- 0
-  thrombo_min[is.na(thrombo_min)]                 <- 200
+  thrombo_min[is.na(thrombo_min)]                 <- 200000
   oxi.ind[is.na(oxi.ind)]                         <- 40
   chr.lunge[is.na(chr.lunge)]             <- 0
   rel.diur                                <- diur/24/gewicht
@@ -494,7 +494,7 @@ sirs.III <- function(verwirrt, thrombo_min, thrombo.daybefore, oxi.ind,
     if( verwirrt[i] == 1 ){
       count <- count +1
     }
-    if( (thrombo_min[i]<= 100) | (thrombo.change[i]>0.3) ){
+    if( (thrombo_min[i]<= 100000) | (thrombo.change[i]>0.3) ){
       count <- count +1
     }
     if( (oxi.ind[i]<=33) & (chr.lunge[i] == 0) ){
