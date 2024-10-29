@@ -54,10 +54,15 @@ getData4temp <- function(FRM_BEF, FRM_B24) {
   temp.all[is.infinite(minvalue_ort.bek), minvalue_ort.bek := NA]
   temp.all[, ort.unbek := ifelse(is.na(minvalue_ort.bek), T,F)]
 
+  # 2024-10-29 MRos: minvalue_ort.unbek is NA if minvalue_ort.bek is not NA.
+  # temp.all[, minvalue_ort.unbek :=
+  #            ifelse(is.na(minvalue_ort.bek),
+  #                   min(value[ort %in% c(-1, 98, 99)], na.rm = T),
+  #                   NA_real_),
+  #          .(patstuid,event)]
+  # Below, minvalue_ort.unbek is the minimum of the temp in unknown locations
   temp.all[, minvalue_ort.unbek :=
-             ifelse(is.na(minvalue_ort.bek),
-                    min(value[ort %in% c(-1, 98, 99)], na.rm = T),
-                    NA_real_),
+             min(value[ort %in% c(-1, 98, 99)], na.rm = T),
            .(patstuid,event)]
   temp.all[is.infinite(minvalue_ort.unbek), minvalue_ort.unbek := NA]
 
@@ -75,18 +80,30 @@ getData4temp <- function(FRM_BEF, FRM_B24) {
            .(patstuid,event)]
   temp.all[is.infinite(maxvalue_ort.bek), maxvalue_ort.bek := NA]
 
+  # 2024-10-29 MRos: maxvalue_ort.unnbek is NA if maxvalue_ort.bek is not NA.
+  # temp.all[, maxvalue_ort.unbek :=
+  #            ifelse(is.na(maxvalue_ort.bek),
+  #                   max(value[ort %in% c(-1, 98, 99)], na.rm = T),
+  #                   NA_real_),
+  #          .(patstuid,event)]
+  # Below, maxvalue_ort.unbek is the maximum of the temp in unknown locations
   temp.all[, maxvalue_ort.unbek :=
-             ifelse(is.na(maxvalue_ort.bek),
-                    max(value[ort %in% c(-1, 98, 99)], na.rm = T),
-                    NA_real_),
+             max(value[ort %in% c(-1, 98, 99)], na.rm = T),
            .(patstuid,event)]
   temp.all[is.infinite(maxvalue_ort.unbek), maxvalue_ort.unbek := NA]
 
-  temp.all[, maxvalue :=
-             ifelse(is.na(maxvalue_ort.bek)==F,
-                    maxvalue_ort.bek,
-                    maxvalue_ort.unbek)
-           ]
+  # 2024-10-29 MRos:
+  # Too high temp should be used for the computing the maximum no matter if its
+  # known where the measurement was taken. This is different from a too low
+  # temp. The reason is that high measured temp is less likely to be a result
+  # of a measurement error.
+  # temp.all[, maxvalue :=
+  #            ifelse(is.na(maxvalue_ort.bek)==F,
+  #                   maxvalue_ort.bek,
+  #                   maxvalue_ort.unbek)
+  #          ]
+  temp.all[, maxvalue := pmax(maxvalue_ort.bek, maxvalue_ort.unbek,
+                              na.rm = TRUE)]
   # 2020-02-22 MRos: this can probably result in an error or is unnecessary.
   # I have commented it out. Checked that it does not change the result.
   # temp.all[, maxvalue := unique(na.omit(maxvalue)),.(patstuid, event)]
