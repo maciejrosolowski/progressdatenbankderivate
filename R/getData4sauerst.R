@@ -37,7 +37,7 @@ getData4sauerst <- function(FRM_O2A, FRM_O2P) {
 
   sauerst = rbind(sauerst1, sauerst2)
   # Hmisc::describe(sauerst)
-  sauerst[,sauerst := ifelse(any(value %in%2:7), 1,
+  sauerst[,sauerst := ifelse(any(value %in%2:9), 1,
                              ifelse(any(value==-1), NA_real_, 0)),
           .(patstuid, event)]
 
