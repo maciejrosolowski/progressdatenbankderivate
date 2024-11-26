@@ -478,7 +478,7 @@ psi.I.to.V <-function(age,verwirrt,hfrq.max,afrq.max,sysbp.min,temp.min,temp.max
       if (art.ph.min.i < 7.35) {
         count<-count + 30
       }
-      if (bun.i >= 9) {
+      if (bun.i >= 11) {
         count<-count + 20
       }
       if (snat.i < 130) {
